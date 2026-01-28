@@ -134,14 +134,14 @@ class MonoDriver(Node):
     # ****************************************************************************************
 
     # ****************************************************************************************
-    def get_image_dataset_asl(self, exp_dir, agent_name = "mav0"):
+    def get_image_dataset_asl(self, exp_dir: str, agent_name = "mav0"):
         """
             Returns images and list of timesteps in ascending order from a ASL formatted dataset
         """
         
         # Define work variables
         imgz_file_list = []
-        time_list = []
+        time_list: list[str] = []
 
         #* Only works for EuRoC MAV format
         agent_cam0_fld = exp_dir + "/" + agent_name + "/" + "cam0"
