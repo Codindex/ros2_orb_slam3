@@ -151,7 +151,7 @@ void MonocularMode::initializeVSLAM(std::string& configString){
 //* Callback that processes timestep sent over ROS
 void MonocularMode::Timestep_callback(const std_msgs::msg::Float64& time_msg){
     // timeStep = 0; // Initialize
-    timeStep = time_msg.data;
+    timestamp = time_msg.data;
 }
 
 //* Callback to process image message and run SLAM node
@@ -181,7 +181,7 @@ void MonocularMode::Img_callback(const sensor_msgs::msg::Image& msg)
     
     //* Perform all ORB-SLAM3 operations in Monocular mode
     //! Pose with respect to the camera coordinate frame not the world coordinate frame
-    Sophus::SE3f Tcw = pAgent->TrackMonocular(cv_ptr->image, timeStep); 
+    Sophus::SE3f Tcw = pAgent->TrackMonocular(cv_ptr->image, timestamp); 
     
     //* An example of what can be done after the pose w.r.t camera coordinate frame is computed by ORB SLAM3
     //Sophus::SE3f Twc = Tcw.inverse(); //* Pose with respect to global image coordinate, reserved for future use

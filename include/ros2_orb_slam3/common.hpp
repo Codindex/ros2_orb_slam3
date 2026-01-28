@@ -57,7 +57,7 @@ class MonocularMode : public rclcpp::Node
     //* public keyword needs to come before the class constructor and anything else
     public:
     std::string experimentConfig = ""; // String to receive settings sent by the python driver
-    double timeStep; // Timestep data received from the python node
+    double timestamp; // Timestep data received from the python node
     std::string receivedConfig = "";
 
     //* Class constructor
