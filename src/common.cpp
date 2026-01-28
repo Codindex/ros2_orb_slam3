@@ -159,10 +159,11 @@ void MonocularMode::Img_callback(const sensor_msgs::msg::Image& msg)
 {
     // Initialize
     cv_bridge::CvImagePtr cv_ptr; //* Does not create a copy, memory efficient
-    
+    // RCLCPP_INFO(this->get_logger(), "Received image");
     //* Convert ROS image to openCV image
     try
     {
+        // RCLCPP_INFO(this->get_logger(), "Try creating pointer");
         //cv::Mat im =  cv_bridge::toCvShare(msg.img, msg)->image;
         cv_ptr = cv_bridge::toCvCopy(msg); // Local scope
         
@@ -178,6 +179,7 @@ void MonocularMode::Img_callback(const sensor_msgs::msg::Image& msg)
     }
     
     // std::cout<<std::fixed<<"Timestep: "<<timeStep<<std::endl; // Debug
+    // RCLCPP_INFO(this->get_logger(), "Pointer successfully created");
     
     //* Perform all ORB-SLAM3 operations in Monocular mode
     //! Pose with respect to the camera coordinate frame not the world coordinate frame
