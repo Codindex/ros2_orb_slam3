@@ -41,10 +41,10 @@ using std::placeholders::_1; //* TODO why this is suggested in official tutorial
 #include <opencv2/imgproc/imgproc.hpp> // Image processing tools
 #include <opencv2/highgui/highgui.hpp> // GUI tools
 #include <opencv2/core/eigen.hpp>
-#include <image_transport/image_transport.h>
+#include <image_transport/image_transport.hpp>
 
 //* ORB SLAM 3 includes
-#include "System.h" //* Also imports the ORB_SLAM3 namespace
+#include "orb_slam3/include/System.h" //* Also imports the ORB_SLAM3 namespace
 
 //* Gobal defs
 #define pass (void)0 // Python's equivalent of "pass" i.e. no operation
