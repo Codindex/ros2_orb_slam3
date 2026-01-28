@@ -167,7 +167,7 @@ class MonoDriver(Node):
         
         if(msg.data == "ACK"):
             self.send_config = False
-            # self.subscribe_exp_ack_.destory() # TODO doesn't work 
+            # self.subscribe_exp_ack_.destroy() # TODO doesn't work 
     # ****************************************************************************************
     
     # ****************************************************************************************
