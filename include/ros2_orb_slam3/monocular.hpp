@@ -51,7 +51,7 @@ using std::placeholders::_1; //* TODO why this is suggested in official tutorial
 
 
 //* Node specific definitions
-class MonocularMode : public rclcpp::Node
+class MonocularNode : public rclcpp::Node
 {   
     //* This slam node inherits from both rclcpp and ORB_SLAM3::System classes
     //* public keyword needs to come before the class constructor and anything else
@@ -61,9 +61,9 @@ class MonocularMode : public rclcpp::Node
     std::string receivedConfig = "";
 
     //* Class constructor
-    MonocularMode(); // Constructor 
+    MonocularNode(); // Constructor 
 
-    ~MonocularMode(); // Destructor
+    ~MonocularNode(); // Destructor
         
     private:
         

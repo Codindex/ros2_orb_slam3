@@ -14,7 +14,7 @@ REQUIREMENTS
 #include "ros2_orb_slam3/monocular.hpp"
 
 //* Constructor
-MonocularMode::MonocularMode() :Node("mono_node_cpp")
+MonocularNode::MonocularNode() :Node("mono_node_cpp")
 {
     // Declare parameters to be passsed from command line
     // https://roboticsbackend.com/rclcpp-params-tutorial-get-set-ros2-params-with-cpp/
@@ -71,16 +71,16 @@ MonocularMode::MonocularMode() :Node("mono_node_cpp")
     subTimestepMsgName = "/mono_py_driver/timestep_msg"; // topic to receive RGB image messages
 
     //* subscribe to python node to receive settings
-    expConfig_subscription_ = this->create_subscription<std_msgs::msg::String>(subexperimentconfigName, 1, std::bind(&MonocularMode::experimentSetting_callback, this, _1));
+    expConfig_subscription_ = this->create_subscription<std_msgs::msg::String>(subexperimentconfigName, 1, std::bind(&MonocularNode::experimentSetting_callback, this, _1));
 
     //* publisher to send out acknowledgement
     configAck_publisher_ = this->create_publisher<std_msgs::msg::String>(pubconfigackName, 10);
 
     //* subscrbite to the image messages coming from the Python driver node
-    subImgMsg_subscription_= this->create_subscription<sensor_msgs::msg::Image>(subImgMsgName, 1, std::bind(&MonocularMode::Img_callback, this, _1));
+    subImgMsg_subscription_= this->create_subscription<sensor_msgs::msg::Image>(subImgMsgName, 1, std::bind(&MonocularNode::Img_callback, this, _1));
 
     //* subscribe to receive the timestep
-    subTimestepMsg_subscription_= this->create_subscription<std_msgs::msg::Float64>(subTimestepMsgName, 1, std::bind(&MonocularMode::Timestep_callback, this, _1));
+    subTimestepMsg_subscription_= this->create_subscription<std_msgs::msg::Float64>(subTimestepMsgName, 1, std::bind(&MonocularNode::Timestep_callback, this, _1));
 
     
     RCLCPP_INFO(this->get_logger(), "Waiting to finish handshake ......");
@@ -88,7 +88,7 @@ MonocularMode::MonocularMode() :Node("mono_node_cpp")
 }
 
 //* Destructor
-MonocularMode::~MonocularMode()
+MonocularNode::~MonocularNode()
 {   
     
     // Stop all threads
@@ -100,7 +100,7 @@ MonocularMode::~MonocularMode()
 }
 
 //* Callback which accepts experiment parameters from the Python node
-void MonocularMode::experimentSetting_callback(const std_msgs::msg::String& msg){
+void MonocularNode::experimentSetting_callback(const std_msgs::msg::String& msg){
     
     // std::cout<<"experimentSetting_callback"<<std::endl;
     bSettingsFromPython = true;
@@ -122,7 +122,7 @@ void MonocularMode::experimentSetting_callback(const std_msgs::msg::String& msg)
 }
 
 //* Method to bind an initialized VSLAM framework to this node
-void MonocularMode::initializeVSLAM(std::string& configString){
+void MonocularNode::initializeVSLAM(std::string& configString){
     
     // Watchdog, if the paths to vocabular and settings files are still not set
     if (vocFilePath == "file_not_set" || settingsFilePath == "file_not_set")
@@ -145,17 +145,17 @@ void MonocularMode::initializeVSLAM(std::string& configString){
     enableOpenCVWindow = true; // Shows OpenCV window output
     
     pAgent = new ORB_SLAM3::System(vocFilePath, settingsFilePath, sensorType, enablePangolinWindow);
-    std::cout << "MonocularMode node initialized" << std::endl; // TODO needs a better message
+    std::cout << "MonocularNode node initialized" << std::endl; // TODO needs a better message
 }
 
 //* Callback that processes timestep sent over ROS
-void MonocularMode::Timestep_callback(const std_msgs::msg::Float64& time_msg){
+void MonocularNode::Timestep_callback(const std_msgs::msg::Float64& time_msg){
     // timeStep = 0; // Initialize
     timestamp = time_msg.data;
 }
 
 //* Callback to process image message and run SLAM node
-void MonocularMode::Img_callback(const sensor_msgs::msg::Image& msg)
+void MonocularNode::Img_callback(const sensor_msgs::msg::Image& msg)
 {
     // Initialize
     cv_bridge::CvImagePtr cv_ptr; //* Does not create a copy, memory efficient
