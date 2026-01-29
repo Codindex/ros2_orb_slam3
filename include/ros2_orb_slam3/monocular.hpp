@@ -88,19 +88,19 @@ class MonocularNode : public rclcpp::Node
         rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr subTimestepMsg_subscription_;
 
         //* ORB_SLAM3 related variables
-        ORB_SLAM3::System* pAgent; // pointer to a ORB SLAM3 object
+        ORB_SLAM3::System *pAgent; // pointer to a ORB SLAM3 object
         ORB_SLAM3::System::eSensor sensorType;
         bool enablePangolinWindow = false; // Shows Pangolin window output
         bool enableOpenCVWindow = false; // Shows OpenCV window output
 
         //* ROS callbacks
-        void experimentSetting_callback(const std_msgs::msg::String& msg); // Callback to process settings sent over by Python node
-        void Timestep_callback(const std_msgs::msg::Float64& time_msg); // Callback to process the timestep for this image
-        void Img_callback(const sensor_msgs::msg::Image& msg); // Callback to process RGB image and semantic matrix sent by Python node
+        void experimentSetting_callback(const std_msgs::msg::String &msg); // Callback to process settings sent over by Python node
+        void Timestep_callback(const std_msgs::msg::Float64 &time_msg); // Callback to process the timestep for this image
+        void Img_callback(const sensor_msgs::msg::Image &msg); // Callback to process RGB image and semantic matrix sent by Python node
         
         //* Helper functions
         // ORB_SLAM3::eigenMatXf convertToEigenMat(const std_msgs::msg::Float32MultiArray& msg); // Helper method, converts semantic matrix eigenMatXf, a Eigen 4x4 float matrix
-        void initializeVSLAM(std::string& configString); //* Method to bind an initialized VSLAM framework to this node
+        void initializeVSLAM(std::string &configString); //* Method to bind an initialized VSLAM framework to this node
 
 
 };

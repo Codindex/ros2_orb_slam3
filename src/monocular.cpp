@@ -96,7 +96,7 @@ MonocularNode::~MonocularNode()
 }
 
 //* Callback which accepts experiment parameters from the Python node
-void MonocularNode::experimentSetting_callback(const std_msgs::msg::String& msg){
+void MonocularNode::experimentSetting_callback(const std_msgs::msg::String &msg){
     
     // std::cout<<"experimentSetting_callback"<<std::endl;
     bSettingsFromPython = true;
@@ -118,7 +118,7 @@ void MonocularNode::experimentSetting_callback(const std_msgs::msg::String& msg)
 }
 
 //* Method to bind an initialized VSLAM framework to this node
-void MonocularNode::initializeVSLAM(std::string& configString){
+void MonocularNode::initializeVSLAM(std::string &configString){
     
     // Watchdog, if the paths to vocabular and settings files are still not set
     if (vocFilePath == "file_not_set" || settingsFilePath == "file_not_set")
@@ -145,13 +145,13 @@ void MonocularNode::initializeVSLAM(std::string& configString){
 }
 
 //* Callback that processes timestep sent over ROS
-void MonocularNode::Timestep_callback(const std_msgs::msg::Float64& time_msg){
+void MonocularNode::Timestep_callback(const std_msgs::msg::Float64 &time_msg){
     // timeStep = 0; // Initialize
     timestamp = time_msg.data;
 }
 
 //* Callback to process image message and run SLAM node
-void MonocularNode::Img_callback(const sensor_msgs::msg::Image& msg)
+void MonocularNode::Img_callback(const sensor_msgs::msg::Image &msg)
 {
     // Initialize
     cv_bridge::CvImagePtr cv_ptr; //* Does not create a copy, memory efficient
@@ -168,7 +168,7 @@ void MonocularNode::Img_callback(const sensor_msgs::msg::Image& msg)
         // cv::imshow("test_window", cv_ptr->image);
         // cv::waitKey(3);
     }
-    catch (cv_bridge::Exception& e)
+    catch (cv_bridge::Exception &e)
     {
         RCLCPP_ERROR(this->get_logger(),"Error reading image");
         return;
