@@ -55,10 +55,6 @@ MonocularNode::MonocularNode() :Node("mono_node_cpp")
         vocFilePath = homeDir + "/" + packagePath + "orb_slam3/Vocabulary/ORBvoc.txt.bin";
         settingsFilePath = homeDir + "/" + packagePath + "orb_slam3/config/Monocular/";
     }
-
-    // std::cout<<"vocFilePath: "<<vocFilePath<<std::endl;
-    // std::cout<<"settingsFilePath: "<<settingsFilePath<<std::endl;
-    
     
     //* DEBUG print
     RCLCPP_INFO(this->get_logger(), "nodeName %s", nodeName.c_str());
