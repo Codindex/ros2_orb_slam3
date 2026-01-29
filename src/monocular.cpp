@@ -104,7 +104,7 @@ void MonocularNode::experimentSetting_callback(const std_msgs::msg::String &msg)
     experimentConfig = msg.data.c_str();
     // receivedConfig = experimentConfig; // Redundant
     
-    RCLCPP_INFO(this->get_logger(), "Configuration YAML file name: %s", this->receivedConfig.c_str());
+    RCLCPP_INFO(this->get_logger(), "Configuration YAML file name: %s", experimentConfig.c_str());
 
     //* Publish acknowledgement
     auto message = std_msgs::msg::String();
