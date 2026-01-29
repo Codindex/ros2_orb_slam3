@@ -11,7 +11,7 @@ REQUIREMENTS
 */
 
 //* Includes
-#include "ros2_orb_slam3/common.hpp"
+#include "ros2_orb_slam3/monocular.hpp"
 
 //* Constructor
 MonocularMode::MonocularMode() :Node("mono_node_cpp")
