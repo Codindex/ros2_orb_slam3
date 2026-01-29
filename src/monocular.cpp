@@ -61,10 +61,12 @@ MonocularNode::MonocularNode() :Node("mono_node_cpp")
     RCLCPP_INFO(this->get_logger(), "voc_file %s", vocFilePath.c_str());
     // RCLCPP_INFO(this->get_logger(), "settings_file_path %s", settingsFilePath.c_str());
     
-    subexperimentconfigName = "/mono_py_driver/experiment_settings"; // topic that sends out some configuration parameters to the cpp ndoe
+    subexperimentconfigName = "/mono_py_driver/experiment_settings"; // topic that sends out some configuration parameters to the cpp node
     pubconfigackName = "/mono_py_driver/exp_settings_ack"; // send an acknowledgement to the python node
     subImgMsgName = "/mono_py_driver/img_msg"; // topic to receive RGB image messages
     subTimestepMsgName = "/mono_py_driver/timestep_msg"; // topic to receive RGB image messages
+
+    // TODO: Remove publisher/subscription about the handshake
 
     //* subscribe to python node to receive settings
     expConfig_subscription_ = this->create_subscription<std_msgs::msg::String>(subexperimentconfigName, 1, std::bind(&MonocularNode::experimentSetting_callback, this, _1));
@@ -80,7 +82,6 @@ MonocularNode::MonocularNode() :Node("mono_node_cpp")
 
     
     RCLCPP_INFO(this->get_logger(), "Waiting to finish handshake ......");
-    
 }
 
 //* Destructor
