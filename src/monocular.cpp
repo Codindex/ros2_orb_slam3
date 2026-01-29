@@ -146,7 +146,6 @@ void MonocularNode::initializeVSLAM(std::string &configString){
 
 //* Callback that processes timestep sent over ROS
 void MonocularNode::Timestep_callback(const std_msgs::msg::Float64 &time_msg){
-    // timeStep = 0; // Initialize
     timestamp = time_msg.data;
 }
 
@@ -156,17 +155,12 @@ void MonocularNode::Img_callback(const sensor_msgs::msg::Image &msg)
     // Initialize
     cv_bridge::CvImagePtr cv_ptr; //* Does not create a copy, memory efficient
     // RCLCPP_INFO(this->get_logger(), "Received image");
+    
     //* Convert ROS image to openCV image
     try
     {
         // RCLCPP_INFO(this->get_logger(), "Try creating pointer");
-        //cv::Mat im =  cv_bridge::toCvShare(msg.img, msg)->image;
         cv_ptr = cv_bridge::toCvCopy(msg); // Local scope
-        
-        // DEBUGGING, Show image
-        // Update GUI Window
-        // cv::imshow("test_window", cv_ptr->image);
-        // cv::waitKey(3);
     }
     catch (cv_bridge::Exception &e)
     {
