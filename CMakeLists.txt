@@ -194,6 +194,8 @@ ament_python_install_package(${PROJECT_NAME}) # Install the modules in ros2_orb_
 # Install Python executibles
 install(PROGRAMS
   scripts/mono_driver_node.py
+  # New Python scripts here
+  scripts/zed_left_driver_node.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
