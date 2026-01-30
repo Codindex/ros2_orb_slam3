@@ -51,7 +51,6 @@ class MonoDriver(Node):
 
         #* ROS2 publisher/subscriber variables [HARDCODED]
         self.pub_img_to_agent_name = "/mono_py_driver/img_msg"
-        self.pub_timestamp_to_agent_name = "/mono_py_driver/timestep_msg"
 
         # NEW: Subscriber to receive images (CompressedImage type)
         self.subscribe_img_msg_ = self.create_subscription(CompressedImage,
@@ -61,8 +60,6 @@ class MonoDriver(Node):
 
         # Publisher to send RGB image
         self.publish_img_msg_ = self.create_publisher(Image, self.pub_img_to_agent_name, 1)
-        
-        self.publish_timestamp_msg_ = self.create_publisher(Float64, self.pub_timestamp_to_agent_name, 1)
 
 
         print()
@@ -81,12 +78,7 @@ class MonoDriver(Node):
             img_msg.header = image.header
             # print(img_msg.encoding)
 
-            timestamp = float(image.header.stamp.sec*1000000000+image.header.stamp.nanosec) # Kept if you use a custom message interface to also pass timestep value
-            timestamp_msg = Float64()
-            timestamp_msg.data = timestamp
-
-            # Publish RGB image and timestamp, must be in the order shown below. I know not very optimum, you can use a custom message interface to send both
-            self.publish_timestamp_msg_.publish(timestamp_msg) 
+            # Publish RGB image, timestamp is in the header :)
             self.publish_img_msg_.publish(img_msg)
         except CvBridgeError as e:
             print(e)
