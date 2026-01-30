@@ -57,8 +57,6 @@ MonocularNode::MonocularNode() :Node("mono_camera_node_cpp")
 
     subImgMsgName = "/mono_py_driver/img_msg"; // topic to receive RGB image messages
 
-    // TODO: Remove publisher/subscription about the handshake
-
     //* subscrbite to the image messages coming from the Python driver node
     subImgMsg_subscription_= this->create_subscription<sensor_msgs::msg::Image>(subImgMsgName, 1, std::bind(&MonocularNode::Img_callback, this, _1));
 
