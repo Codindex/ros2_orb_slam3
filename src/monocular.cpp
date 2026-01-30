@@ -67,9 +67,7 @@ MonocularNode::MonocularNode() :Node("mono_camera_node_cpp")
     RCLCPP_INFO(this->get_logger(), "nodeName %s", nodeName.c_str());
     RCLCPP_INFO(this->get_logger(), "voc_file %s", vocFilePath.c_str());
     // RCLCPP_INFO(this->get_logger(), "settings_file_path %s", settingsFilePath.c_str());
-    
-    subexperimentconfigName = "/mono_py_driver/experiment_settings"; // topic that sends out some configuration parameters to the cpp node
-    pubconfigackName = "/mono_py_driver/exp_settings_ack"; // send an acknowledgement to the python node
+
     subImgMsgName = "/mono_py_driver/img_msg"; // topic to receive RGB image messages
 
     // TODO: Remove publisher/subscription about the handshake

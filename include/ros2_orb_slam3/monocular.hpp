@@ -74,9 +74,7 @@ class MonocularNode : public rclcpp::Node
         std::string settingsFilePath = ""; // Path to settings file provided by ORB_SLAM3 package
         std::string orbSLAM3settingsFile = ""; // File name for the settings file (in path pointed by "this->settingsFilePath")
         bool bSettingsFromPython = false; // Flag set once when experiment setting from python node is received
-        
-        std::string subexperimentconfigName = ""; // Subscription topic name
-        std::string pubconfigackName = ""; // Publisher topic name
+
         std::string subImgMsgName = ""; // Topic to subscribe to receive RGB images from a python node
         std::string subTimestepMsgName = ""; // Topic to subscribe to receive the timestep related to the 
 
