@@ -19,53 +19,40 @@ MonocularNode::MonocularNode() :Node("mono_camera_node_cpp")
     // Declare parameters to be passsed from command line
     // https://roboticsbackend.com/rclcpp-params-tutorial-get-set-ros2-params-with-cpp/
     
-    //* Find path to home directory
-    homeDir = getenv("HOME");
-    // std::cout<<"Home: "<<homeDir<<std::endl;
-    
     // std::cout<<"VLSAM NODE STARTED\n\n";
     RCLCPP_INFO(this->get_logger(), "\nORB-SLAM3-V1 NODE STARTED");
 
     this->declare_parameter("node_name_arg", "not_given"); // Name of this agent
-    this->declare_parameter("voc_file_arg", "file_not_set"); // Needs to be overriden with appropriate name
-    this->declare_parameter("settings_file_path_arg", "file_path_not_set"); // path to settings file
+    // this->declare_parameter("voc_file_arg", "file_not_set"); // Needs to be overriden with appropriate name
+    // this->declare_parameter("settings_file_path_arg", "file_path_not_set"); // path to settings file
     
     this->declare_parameter("orb_slam3_config", "Zed_left_camera.yaml");
     // this->declare_parameter("", "");
 
     //* Watchdog, populate default values
     nodeName = "not_set";
-    vocFilePath = "file_not_set";
-    settingsFilePath = "file_not_set";
+    // vocFilePath = "file_not_set";
+    // settingsFilePath = "file_not_set";
 
     //* Populate parameter values
     rclcpp::Parameter param1 = this->get_parameter("node_name_arg");
     nodeName = param1.as_string();
-    
-    rclcpp::Parameter param2 = this->get_parameter("voc_file_arg");
-    vocFilePath = param2.as_string();
+    //* DEBUG print
+    RCLCPP_INFO(this->get_logger(), "nodeName %s", nodeName.c_str());
 
-    rclcpp::Parameter param3 = this->get_parameter("settings_file_path_arg");
-    settingsFilePath = param3.as_string();
+    // rclcpp::Parameter param2 = this->get_parameter("voc_file_arg");
+    // vocFilePath = param2.as_string();
+
+    // rclcpp::Parameter param3 = this->get_parameter("settings_file_path_arg");
+    // settingsFilePath = param3.as_string();
 
     orbSLAM3settingsFile = this->get_parameter("orb_slam3_config").as_string();
 
     // rclcpp::Parameter param4 = this->get_parameter("settings_file_name_arg");
     
-  
-    //* HARDCODED, set paths
-    if (vocFilePath == "file_not_set") // || settingsFilePath == "file_not_set")
-    {
-        pass;
-        vocFilePath = homeDir + "/" + packagePath + "orb_slam3/Vocabulary/ORBvoc.txt.bin";
-        // settingsFilePath = homeDir + "/" + packagePath + "orb_slam3/config/Monocular/";
-    }
-    settingsFilePath = homeDir + "/" + packagePath + "orb_slam3/config/" + "Monocular" + "/"; // "Monocular" will be a variable in a next version
-    initializeOrbSLAM(orbSLAM3settingsFile);
     
-    //* DEBUG print
-    RCLCPP_INFO(this->get_logger(), "nodeName %s", nodeName.c_str());
-    RCLCPP_INFO(this->get_logger(), "voc_file %s", vocFilePath.c_str());
+    initializeOrbSLAM(orbSLAM3settingsFile);
+
     // RCLCPP_INFO(this->get_logger(), "settings_file_path %s", settingsFilePath.c_str());
 
     subImgMsgName = "/mono_py_driver/img_msg"; // topic to receive RGB image messages
@@ -93,15 +80,15 @@ MonocularNode::~MonocularNode()
 
 //* Method to bind an initialized VSLAM framework to this node
 void MonocularNode::initializeOrbSLAM(std::string &configFileString){
-    // Watchdog, if the paths to vocabular file is still not set
-    if (vocFilePath == "file_not_set")
-    {
-        RCLCPP_ERROR(get_logger(), "Please provide valid voc_file and settings_file paths");       
-        rclcpp::shutdown();
-    } 
-    
+    //* Find path to home directory
+    homeDir = getenv("HOME");
+    // std::cout<<"Home: "<<homeDir<<std::endl;
+    //* HARDCODED, set paths
+    vocFilePath = homeDir + "/" + packagePath + "orb_slam3/Vocabulary/ORBvoc.txt.bin";
+    RCLCPP_INFO(this->get_logger(), "voc_file %s", vocFilePath.c_str());
+
     //* Build .yaml`s file path
-    settingsFilePath = settingsFilePath.append(configFileString); // Example ros2_ws/src/orb_slam3_ros2/orb_slam3/config/Monocular/TUM2.yaml
+    settingsFilePath = homeDir + "/" + packagePath + "orb_slam3/config/" + "Monocular" + "/" + configFileString; // "Monocular" will be a variable in a next version
 
     RCLCPP_INFO(this->get_logger(), "Path to settings file: %s", settingsFilePath.c_str());
     
