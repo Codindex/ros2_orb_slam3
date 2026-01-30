@@ -117,6 +117,7 @@ void MonocularNode::initializeOrbSLAM(std::string &configFileString){
     std::cout << "MonocularNode node initialized" << std::endl; // TODO needs a better message
 }
 
+//*Helper that processes timestep on the image's header
 double MonocularNode::extract_timestamp_from_header(const builtin_interfaces::msg::Time &stamp)
 {
     return stamp.sec*1.0E9 + stamp.nanosec*1.0;
