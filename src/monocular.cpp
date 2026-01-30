@@ -32,9 +32,8 @@ MonocularNode::MonocularNode() :Node("mono_camera_node_cpp")
     subImgMsgName = "/mono_py_driver/img_msg"; // topic to receive RGB image messages
 
     //* subscrbite to the image messages coming from the Python driver node
-    subImgMsg_subscription_= this->create_subscription<sensor_msgs::msg::Image>(subImgMsgName, 1, std::bind(&MonocularNode::Img_callback, this, _1));
+    subImgMsg_subscription_= this->create_subscription<sensor_msgs::msg::CompressedImage>(subImgMsgName, 1, std::bind(&MonocularNode::Img_callback, this, _1));
 
-    
     RCLCPP_INFO(this->get_logger(), "Waiting to finish handshake ......");
 }
 
@@ -82,7 +81,7 @@ double MonocularNode::extract_timestamp_from_header(const builtin_interfaces::ms
 }
 
 //* Callback to process image message and run SLAM node
-void MonocularNode::Img_callback(const sensor_msgs::msg::Image &msg)
+void MonocularNode::Img_callback(const sensor_msgs::msg::CompressedImage &msg)
 {
     // Initialize
     cv_bridge::CvImagePtr cv_ptr; //* Does not create a copy, memory efficient

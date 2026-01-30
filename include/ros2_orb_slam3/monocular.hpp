@@ -75,7 +75,7 @@ class MonocularNode : public rclcpp::Node
         std::string subTimestepMsgName = ""; // Topic to subscribe to receive the timestep related to the 
 
         //* Definitions of publisher and subscribers
-        rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr subImgMsg_subscription_;
+        rclcpp::Subscription<sensor_msgs::msg::CompressedImage>::SharedPtr subImgMsg_subscription_;
 
         //* ORB_SLAM3 related variables
         ORB_SLAM3::System *pAgent; // pointer to a ORB SLAM3 object
@@ -84,7 +84,7 @@ class MonocularNode : public rclcpp::Node
         bool enableOpenCVWindow = false; // Shows OpenCV window output
 
         //* ROS callbacks
-        void Img_callback(const sensor_msgs::msg::Image &msg); // Callback to process RGB image and semantic matrix sent by Python node
+        void Img_callback(const sensor_msgs::msg::CompressedImage &msg); // Callback to process RGB image and semantic matrix sent by Python node
         
         //* Helper functions
         // ORB_SLAM3::eigenMatXf convertToEigenMat(const std_msgs::msg::Float32MultiArray& msg); // Helper method, converts semantic matrix eigenMatXf, a Eigen 4x4 float matrix

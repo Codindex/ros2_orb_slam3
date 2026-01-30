@@ -59,7 +59,7 @@ class MonoDriver(Node):
         self.subscribe_img_msg_
 
         # Publisher to send RGB image
-        self.publish_img_msg_ = self.create_publisher(Image, self.pub_img_to_agent_name, 1)
+        self.publish_img_msg_ = self.create_publisher(CompressedImage, self.pub_img_to_agent_name, 1)
 
 
         print()
@@ -73,13 +73,13 @@ class MonoDriver(Node):
         """
         try:
             # print(image.format)
-            cv_img = self.br.compressed_imgmsg_to_cv2(image)
-            img_msg = self.br.cv2_to_imgmsg(cv_img)
-            img_msg.header = image.header
+            # cv_img = self.br.compressed_imgmsg_to_cv2(image)
+            # img_msg = self.br.cv2_to_imgmsg(cv_img)
+            # img_msg.header = image.header
             # print(img_msg.encoding)
 
             # Publish RGB image, timestamp is in the header :)
-            self.publish_img_msg_.publish(img_msg)
+            self.publish_img_msg_.publish(image)
         except CvBridgeError as e:
             print(e)
     # ****************************************************************************************
