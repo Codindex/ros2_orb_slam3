@@ -99,7 +99,7 @@ class MonocularNode : public rclcpp::Node
         //* Helper functions
         // ORB_SLAM3::eigenMatXf convertToEigenMat(const std_msgs::msg::Float32MultiArray& msg); // Helper method, converts semantic matrix eigenMatXf, a Eigen 4x4 float matrix
         void initializeOrbSLAM(std::string &configFileString); //* Method to bind an initialized VSLAM framework to this node
-
+        double extract_timestamp_from_header(const builtin_interfaces::msg::Time &stamp);
 };
 
 #endif

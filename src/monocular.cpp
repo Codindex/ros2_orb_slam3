@@ -121,9 +121,14 @@ void MonocularNode::initializeOrbSLAM(std::string &configFileString){
     std::cout << "MonocularNode node initialized" << std::endl; // TODO needs a better message
 }
 
+double MonocularNode::extract_timestamp_from_header(const builtin_interfaces::msg::Time &stamp)
+{
+    return stamp.sec*1.0E9 + stamp.nanosec*1.0;
+}
+
 //* Callback that processes timestep sent over ROS
 void MonocularNode::Timestep_callback(const std_msgs::msg::Float64 &time_msg){
-    timestamp = time_msg.data;
+    // timestamp = time_msg.data;
 }
 
 //* Callback to process image message and run SLAM node
@@ -147,6 +152,7 @@ void MonocularNode::Img_callback(const sensor_msgs::msg::Image &msg)
     
     // std::cout<<std::fixed<<"Timestep: "<<timeStep<<std::endl; // Debug
     // RCLCPP_INFO(this->get_logger(), "Pointer successfully created");
+    timestamp = extract_timestamp_from_header(cv_ptr->header.stamp);
     
     //* Perform all ORB-SLAM3 operations in Monocular mode
     //! Pose with respect to the camera coordinate frame not the world coordinate frame
