@@ -93,7 +93,6 @@ class MonocularNode : public rclcpp::Node
         bool enableOpenCVWindow = false; // Shows OpenCV window output
 
         //* ROS callbacks
-        void Timestep_callback(const std_msgs::msg::Float64 &time_msg); // Callback to process the timestep for this image
         void Img_callback(const sensor_msgs::msg::Image &msg); // Callback to process RGB image and semantic matrix sent by Python node
         
         //* Helper functions

@@ -71,15 +71,11 @@ MonocularNode::MonocularNode() :Node("mono_camera_node_cpp")
     subexperimentconfigName = "/mono_py_driver/experiment_settings"; // topic that sends out some configuration parameters to the cpp node
     pubconfigackName = "/mono_py_driver/exp_settings_ack"; // send an acknowledgement to the python node
     subImgMsgName = "/mono_py_driver/img_msg"; // topic to receive RGB image messages
-    subTimestepMsgName = "/mono_py_driver/timestep_msg"; // topic to receive RGB image messages
 
     // TODO: Remove publisher/subscription about the handshake
 
     //* subscrbite to the image messages coming from the Python driver node
     subImgMsg_subscription_= this->create_subscription<sensor_msgs::msg::Image>(subImgMsgName, 1, std::bind(&MonocularNode::Img_callback, this, _1));
-
-    //* subscribe to receive the timestep
-    subTimestepMsg_subscription_= this->create_subscription<std_msgs::msg::Float64>(subTimestepMsgName, 1, std::bind(&MonocularNode::Timestep_callback, this, _1));
 
     
     RCLCPP_INFO(this->get_logger(), "Waiting to finish handshake ......");
@@ -124,11 +120,6 @@ void MonocularNode::initializeOrbSLAM(std::string &configFileString){
 double MonocularNode::extract_timestamp_from_header(const builtin_interfaces::msg::Time &stamp)
 {
     return stamp.sec*1.0E9 + stamp.nanosec*1.0;
-}
-
-//* Callback that processes timestep sent over ROS
-void MonocularNode::Timestep_callback(const std_msgs::msg::Float64 &time_msg){
-    // timestamp = time_msg.data;
 }
 
 //* Callback to process image message and run SLAM node
