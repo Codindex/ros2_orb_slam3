@@ -163,14 +163,26 @@ ament_target_dependencies(mono_node_cpp
 
 target_link_libraries(mono_node_cpp PUBLIC orb_slam3_lib) # Link a node with the internal shared library
 
+# Add NEW executable here
+add_executable(mono_camera_node_cpp
+  src/monocular_main.cpp
+  src/monocular.cpp
+)
+
+ament_target_dependencies(mono_camera_node_cpp
+  PUBLIC ${THIS_PACKAGE_INCLUDE_DEPENDS}
+)
+
+target_link_libraries(mono_camera_node_cpp PUBLIC orb_slam3_lib) # Link a node with the internal shared library
+
 
 # Install all the header files in package/package/include
 install (DIRECTORY include/ 
         DESTINATION include
 )
 
-# Install our node and library
-install(TARGETS mono_node_cpp orb_slam3_lib
+# Install our nodes and library
+install(TARGETS mono_node_cpp mono_camera_node_cpp orb_slam3_lib
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION lib/${PROJECT_NAME}

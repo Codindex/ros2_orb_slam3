@@ -14,7 +14,7 @@ REQUIREMENTS
 #include "ros2_orb_slam3/monocular.hpp"
 
 //* Constructor
-MonocularNode::MonocularNode() :Node("mono_node_cpp")
+MonocularNode::MonocularNode() :Node("mono_camera_node_cpp")
 {
     // Declare parameters to be passsed from command line
     // https://roboticsbackend.com/rclcpp-params-tutorial-get-set-ros2-params-with-cpp/
@@ -120,7 +120,7 @@ void MonocularNode::experimentSetting_callback(const std_msgs::msg::String &msg)
     configAck_publisher_->publish(message);
 
     //* Wait to complete VSLAM initialization
-    initializeVSLAM(experimentConfig);
+    // initializeVSLAM(experimentConfig);
 
 }
 
