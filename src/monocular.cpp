@@ -99,10 +99,10 @@ void MonocularNode::Img_callback(const sensor_msgs::msg::Image &msg)
         RCLCPP_ERROR(this->get_logger(),"Error reading image");
         return;
     }
-    
-    // std::cout<<std::fixed<<"Timestep: "<<timeStep<<std::endl; // Debug
     // RCLCPP_INFO(this->get_logger(), "Pointer successfully created");
+
     timestamp = extract_timestamp_from_header(cv_ptr->header.stamp);
+    // RCLCPP_INFO(this->get_logger(), "Timer extracted from header");
     
     //* Perform all ORB-SLAM3 operations in Monocular mode
     //! Pose with respect to the camera coordinate frame not the world coordinate frame
@@ -110,7 +110,6 @@ void MonocularNode::Img_callback(const sensor_msgs::msg::Image &msg)
     
     //* An example of what can be done after the pose w.r.t camera coordinate frame is computed by ORB SLAM3
     //Sophus::SE3f Twc = Tcw.inverse(); //* Pose with respect to global image coordinate, reserved for future use
-
 }
 
 
