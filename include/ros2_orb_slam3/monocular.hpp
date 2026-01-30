@@ -70,8 +70,6 @@ class MonocularNode : public rclcpp::Node
         std::string packagePath = "ros2_ws/src/ros2_orb_slam3/"; //! Change to match path to your workspace
         std::string OPENCV_WINDOW = ""; // Set during initialization
         std::string nodeName = ""; // Name of this node
-        std::string vocFilePath = ""; // Path to ORB vocabulary provided by DBoW2 package
-        std::string settingsFilePath = ""; // Path to settings file provided by ORB_SLAM3 package
         std::string orbSLAM3settingsFile = ""; // File name for the settings file (in path pointed by "this->settingsFilePath")
         bool bSettingsFromPython = false; // Flag set once when experiment setting from python node is received
 
