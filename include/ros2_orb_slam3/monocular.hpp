@@ -74,6 +74,7 @@ class MonocularNode : public rclcpp::Node
         std::string nodeName = ""; // Name of this node
         std::string vocFilePath = ""; // Path to ORB vocabulary provided by DBoW2 package
         std::string settingsFilePath = ""; // Path to settings file provided by ORB_SLAM3 package
+        std::string orbSLAM3settingsFile = ""; // File name for the settings file (in path pointed by "this->settingsFilePath")
         bool bSettingsFromPython = false; // Flag set once when experiment setting from python node is received
         
         std::string subexperimentconfigName = ""; // Subscription topic name
@@ -101,7 +102,7 @@ class MonocularNode : public rclcpp::Node
         //* Helper functions
         // ORB_SLAM3::eigenMatXf convertToEigenMat(const std_msgs::msg::Float32MultiArray& msg); // Helper method, converts semantic matrix eigenMatXf, a Eigen 4x4 float matrix
         void initializeVSLAM(std::string &configString); //* Method to bind an initialized VSLAM framework to this node
-
+        void initializeOrbSLAM(std::string &configFileString); //* Method to bind an initialized VSLAM framework to this node
 
 };
 

@@ -30,6 +30,8 @@ MonocularNode::MonocularNode() :Node("mono_node_cpp")
     this->declare_parameter("voc_file_arg", "file_not_set"); // Needs to be overriden with appropriate name  
     this->declare_parameter("settings_file_path_arg", "file_path_not_set"); // path to settings file  
     
+    this->declare_parameter("orb_slam3_config", "Zed_left_camera.yaml");
+
     //* Watchdog, populate default values
     nodeName = "not_set";
     vocFilePath = "file_not_set";
@@ -45,16 +47,20 @@ MonocularNode::MonocularNode() :Node("mono_node_cpp")
     rclcpp::Parameter param3 = this->get_parameter("settings_file_path_arg");
     settingsFilePath = param3.as_string();
 
+    orbSLAM3settingsFile = this->get_parameter("orb_slam3_config").as_string();
+
     // rclcpp::Parameter param4 = this->get_parameter("settings_file_name_arg");
     
   
     //* HARDCODED, set paths
-    if (vocFilePath == "file_not_set" || settingsFilePath == "file_not_set")
+    if (vocFilePath == "file_not_set") // || settingsFilePath == "file_not_set")
     {
         pass;
         vocFilePath = homeDir + "/" + packagePath + "orb_slam3/Vocabulary/ORBvoc.txt.bin";
-        settingsFilePath = homeDir + "/" + packagePath + "orb_slam3/config/Monocular/";
+        // settingsFilePath = homeDir + "/" + packagePath + "orb_slam3/config/Monocular/";
     }
+    settingsFilePath = homeDir + "/" + packagePath + "orb_slam3/config/" + "Monocular" + "/"; // "Monocular" will be a variable in a next version
+    initializeOrbSLAM(orbSLAM3settingsFile);
     
     //* DEBUG print
     RCLCPP_INFO(this->get_logger(), "nodeName %s", nodeName.c_str());
@@ -132,6 +138,30 @@ void MonocularNode::initializeVSLAM(std::string &configString){
     
     settingsFilePath = settingsFilePath.append(configString);
     settingsFilePath = settingsFilePath.append(".yaml"); // Example ros2_ws/src/orb_slam3_ros2/orb_slam3/config/Monocular/TUM2.yaml
+
+    RCLCPP_INFO(this->get_logger(), "Path to settings file: %s", settingsFilePath.c_str());
+    
+    // NOTE if you plan on passing other configuration parameters to ORB SLAM3 Systems class, do it here
+    // NOTE you may also use a .yaml file here to set these values
+    sensorType = ORB_SLAM3::System::MONOCULAR; 
+    enablePangolinWindow = true; // Shows Pangolin window output
+    enableOpenCVWindow = true; // Shows OpenCV window output
+    
+    pAgent = new ORB_SLAM3::System(vocFilePath, settingsFilePath, sensorType, enablePangolinWindow);
+    std::cout << "MonocularNode node initialized" << std::endl; // TODO needs a better message
+}
+
+//* Method to bind an initialized VSLAM framework to this node
+void MonocularNode::initializeOrbSLAM(std::string &configFileString){
+    // Watchdog, if the paths to vocabular file is still not set
+    if (vocFilePath == "file_not_set")
+    {
+        RCLCPP_ERROR(get_logger(), "Please provide valid voc_file and settings_file paths");       
+        rclcpp::shutdown();
+    } 
+    
+    //* Build .yaml`s file path
+    settingsFilePath = settingsFilePath.append(configFileString); // Example ros2_ws/src/orb_slam3_ros2/orb_slam3/config/Monocular/TUM2.yaml
 
     RCLCPP_INFO(this->get_logger(), "Path to settings file: %s", settingsFilePath.c_str());
     
