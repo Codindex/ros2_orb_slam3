@@ -31,6 +31,7 @@ MonocularNode::MonocularNode() :Node("mono_camera_node_cpp")
     this->declare_parameter("settings_file_path_arg", "file_path_not_set"); // path to settings file
     
     this->declare_parameter("orb_slam3_config", "Zed_left_camera.yaml");
+    // this->declare_parameter("", "");
 
     //* Watchdog, populate default values
     nodeName = "not_set";
