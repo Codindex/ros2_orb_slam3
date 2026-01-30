@@ -26,9 +26,9 @@ MonocularNode::MonocularNode() :Node("mono_camera_node_cpp")
     // std::cout<<"VLSAM NODE STARTED\n\n";
     RCLCPP_INFO(this->get_logger(), "\nORB-SLAM3-V1 NODE STARTED");
 
-    this->declare_parameter("node_name_arg", "not_given"); // Name of this agent 
-    this->declare_parameter("voc_file_arg", "file_not_set"); // Needs to be overriden with appropriate name  
-    this->declare_parameter("settings_file_path_arg", "file_path_not_set"); // path to settings file  
+    this->declare_parameter("node_name_arg", "not_given"); // Name of this agent
+    this->declare_parameter("voc_file_arg", "file_not_set"); // Needs to be overriden with appropriate name
+    this->declare_parameter("settings_file_path_arg", "file_path_not_set"); // path to settings file
     
     this->declare_parameter("orb_slam3_config", "Zed_left_camera.yaml");
 
