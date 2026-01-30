@@ -75,10 +75,7 @@ class MonocularNode : public rclcpp::Node
         std::string subTimestepMsgName = ""; // Topic to subscribe to receive the timestep related to the 
 
         //* Definitions of publisher and subscribers
-        rclcpp::Subscription<std_msgs::msg::String>::SharedPtr expConfig_subscription_;
-        rclcpp::Publisher<std_msgs::msg::String>::SharedPtr configAck_publisher_;
         rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr subImgMsg_subscription_;
-        rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr subTimestepMsg_subscription_;
 
         //* ORB_SLAM3 related variables
         ORB_SLAM3::System *pAgent; // pointer to a ORB SLAM3 object
