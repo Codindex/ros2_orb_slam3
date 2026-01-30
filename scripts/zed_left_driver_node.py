@@ -50,8 +50,6 @@ class MonoDriver(Node):
         self.br = CvBridge()
 
         #* ROS2 publisher/subscriber variables [HARDCODED]
-        self.pub_exp_config_name = "/mono_py_driver/experiment_settings"
-        self.sub_exp_ack_name = "/mono_py_driver/exp_settings_ack"
         self.pub_img_to_agent_name = "/mono_py_driver/img_msg"
         self.pub_timestamp_to_agent_name = "/mono_py_driver/timestep_msg"
 
