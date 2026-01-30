@@ -75,12 +75,6 @@ MonocularNode::MonocularNode() :Node("mono_camera_node_cpp")
 
     // TODO: Remove publisher/subscription about the handshake
 
-    //* subscribe to python node to receive settings
-    expConfig_subscription_ = this->create_subscription<std_msgs::msg::String>(subexperimentconfigName, 1, std::bind(&MonocularNode::experimentSetting_callback, this, _1));
-
-    //* publisher to send out acknowledgement
-    configAck_publisher_ = this->create_publisher<std_msgs::msg::String>(pubconfigackName, 10);
-
     //* subscrbite to the image messages coming from the Python driver node
     subImgMsg_subscription_= this->create_subscription<sensor_msgs::msg::Image>(subImgMsgName, 1, std::bind(&MonocularNode::Img_callback, this, _1));
 
@@ -100,28 +94,6 @@ MonocularNode::~MonocularNode()
     // Release resources and cleanly shutdown
     pAgent->Shutdown();
     pass;
-
-}
-
-//* Callback which accepts experiment parameters from the Python node
-void MonocularNode::experimentSetting_callback(const std_msgs::msg::String &msg){
-    
-    // std::cout<<"experimentSetting_callback"<<std::endl;
-    bSettingsFromPython = true;
-    experimentConfig = msg.data.c_str();
-    // receivedConfig = experimentConfig; // Redundant
-    
-    RCLCPP_INFO(this->get_logger(), "Configuration YAML file name: %s", experimentConfig.c_str());
-
-    //* Publish acknowledgement
-    auto message = std_msgs::msg::String();
-    message.data = "ACK";
-    
-    std::cout<<"Sent response: "<<message.data.c_str()<<std::endl;
-    configAck_publisher_->publish(message);
-
-    //* Wait to complete VSLAM initialization
-    // initializeVSLAM(experimentConfig);
 
 }
 

@@ -54,20 +54,6 @@ class MonoDriver(Node):
         self.sub_exp_ack_name = "/mono_py_driver/exp_settings_ack"
         self.pub_img_to_agent_name = "/mono_py_driver/img_msg"
         self.pub_timestamp_to_agent_name = "/mono_py_driver/timestep_msg"
-        self.send_config = True # Set False once handshake is completed with the cpp node
-        
-        #* Setup ROS2 publishers and subscribers
-        self.publish_exp_config_ = self.create_publisher(String, self.pub_exp_config_name, 1) # Publish configs to the ORB-SLAM3 C++ node
-
-        #* Build the configuration string to be sent out
-        print(f"Configuration to be sent: {self.settings_name}")
-
-
-        #* Subscriber to get acknowledgement from CPP node that it received experimetn settings
-        self.subscribe_exp_ack_ = self.create_subscription(String, 
-                                                           self.sub_exp_ack_name, 
-                                                           self.ack_callback, 10)
-        self.subscribe_exp_ack_
 
         # NEW: Subscriber to receive images (CompressedImage type)
         self.subscribe_img_msg_ = self.create_subscription(CompressedImage,
@@ -82,32 +68,7 @@ class MonoDriver(Node):
 
 
         print()
-        print(f"MonoDriver initialized, attempting handshake with CPP node")
-    # ****************************************************************************************
-
-    # ****************************************************************************************
-    def ack_callback(self, msg: String):
-        """
-            Callback function
-        """
-        print(f"Got ack: {msg.data}")
-        
-        if(msg.data == "ACK"):
-            self.send_config = False
-            # self.subscribe_exp_ack_.destroy()
-    # ****************************************************************************************
-    
-    # ****************************************************************************************
-    def handshake_with_cpp_node(self):
-        """
-            Send and receive acknowledge of sent configuration settings
-        """
-        if (self.send_config == True):
-            # print(f"Sent message: {self.exp_config_msg}")
-            msg = String()
-            msg.data = self.settings_name
-            self.publish_exp_config_.publish(msg)
-            time.sleep(0.01)
+        print(f"MonoDriver initialized")
     # ****************************************************************************************
 
     # ****************************************************************************************
@@ -138,16 +99,6 @@ class MonoDriver(Node):
 def main(args = None):
     rclpy.init(args=args) # Initialize node
     mono_driver = MonoDriver("zed_left_camera_mono_py_node") #* Initialize the node
-    
-    #* Blocking loop to initialize handshake
-    while(mono_driver.send_config == True):
-        mono_driver.handshake_with_cpp_node()
-        rclpy.spin_once(mono_driver)
-
-        if(mono_driver.send_config == False):
-            break
-        
-    print(f"Handshake complete")
 
     rclpy.spin(mono_driver)
 
