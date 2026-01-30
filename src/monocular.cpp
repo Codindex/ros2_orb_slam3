@@ -22,19 +22,8 @@ MonocularNode::MonocularNode() :Node("mono_camera_node_cpp")
     // std::cout<<"VLSAM NODE STARTED\n\n";
     RCLCPP_INFO(this->get_logger(), "\nORB-SLAM3-V1 NODE STARTED");
 
-    this->declare_parameter("node_name_arg", "not_given"); // Name of this agent
-    
     this->declare_parameter("orb_slam3_config", "Zed_left_camera.yaml");
     // this->declare_parameter("", "");
-
-    //* Watchdog, populate default values
-    nodeName = "not_set";
-
-    //* Populate parameter values
-    rclcpp::Parameter param1 = this->get_parameter("node_name_arg");
-    nodeName = param1.as_string();
-    //* DEBUG print
-    RCLCPP_INFO(this->get_logger(), "nodeName %s", nodeName.c_str());
 
     orbSLAM3settingsFile = this->get_parameter("orb_slam3_config").as_string();    
 
@@ -64,7 +53,7 @@ MonocularNode::~MonocularNode()
 //* Method to bind an initialized VSLAM framework to this node
 void MonocularNode::initializeOrbSLAM(std::string &configFileString){
     //* Find path to home directory
-    homeDir = getenv("HOME");
+    std::string homeDir = getenv("HOME");
     // std::cout<<"Home: "<<homeDir<<std::endl;
 
     //* HARDCODED, set paths
