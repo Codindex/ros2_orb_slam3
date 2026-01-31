@@ -64,7 +64,7 @@ void MonocularNode::initializeOrbSLAM(){
     
     // NOTE if you plan on passing other configuration parameters to ORB SLAM3 Systems class, do it here
     // NOTE you may also use a .yaml file here to set these values
-    sensorType = ORB_SLAM3::System::MONOCULAR; 
+    sensorType = ORB_SLAM3::System::MONOCULAR; // Monocular, Stereo, RGBD; with/without IMU
     enablePangolinWindow = true; // Shows Pangolin window output
     enableOpenCVWindow = true; // Shows OpenCV window output
     
