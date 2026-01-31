@@ -31,8 +31,6 @@ MonocularNode::MonocularNode() :Node("mono_camera_node_cpp")
 
     //* subscrbite to the image messages coming from the Python driver node
     subImgMsg_subscription_= this->create_subscription<sensor_msgs::msg::CompressedImage>(subImgMsgName, 1, std::bind(&MonocularNode::Img_callback, this, _1));
-
-    RCLCPP_INFO(this->get_logger(), "Waiting to finish handshake ......");
 }
 
 //* Destructor
