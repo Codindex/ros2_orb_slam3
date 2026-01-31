@@ -63,6 +63,6 @@ def generate_launch_description():
         orbslam_node_name_launch_arg,
         driver_node_name_launch_arg,
         ros_parameters_file_launch_arg,
-        python_driver_node,
+        # python_driver_node,
         orbslam3_node,
     ])
