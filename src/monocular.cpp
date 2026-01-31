@@ -25,9 +25,7 @@ MonocularNode::MonocularNode() :Node("mono_camera_node_cpp")
     this->declare_parameter("orb_slam3_config", "Zed_left_camera.yaml");
     this->declare_parameter("camera_topic", "/mono_py_driver/img_msg");
 
-    orbSLAM3settingsFile = this->get_parameter("orb_slam3_config").as_string();
-
-    initializeOrbSLAM(orbSLAM3settingsFile);
+    initializeOrbSLAM();
 
     subImgMsgName = this->get_parameter("camera_topic").as_string(); // topic to receive RGB image messages
 
@@ -50,7 +48,7 @@ MonocularNode::~MonocularNode()
 }
 
 //* Method to bind an initialized VSLAM framework to this node
-void MonocularNode::initializeOrbSLAM(std::string &configFileString){
+void MonocularNode::initializeOrbSLAM(){
     //* Find path to home directory
     std::string homeDir = getenv("HOME");
     // std::cout<<"Home: "<<homeDir<<std::endl;
@@ -58,6 +56,8 @@ void MonocularNode::initializeOrbSLAM(std::string &configFileString){
     //* HARDCODED, set paths
     auto vocFilePath = homeDir + "/" + packagePath + "orb_slam3/Vocabulary/ORBvoc.txt.bin";
     RCLCPP_INFO(this->get_logger(), "voc_file %s", vocFilePath.c_str());
+
+    auto configFileString = this->get_parameter("orb_slam3_config").as_string();
 
     //* Build .yaml`s file path
     auto settingsFilePath = homeDir + "/" + packagePath + "orb_slam3/config/" + "Monocular" + "/" + configFileString; // "Monocular" will be a variable in a next version

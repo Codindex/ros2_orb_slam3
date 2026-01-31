@@ -68,7 +68,6 @@ class MonocularNode : public rclcpp::Node
         // Class internal variables
         std::string packagePath = "ros2_ws/src/ros2_orb_slam3/"; //! Change to match path to your workspace
         std::string OPENCV_WINDOW = ""; // Set during initialization
-        std::string orbSLAM3settingsFile = ""; // File name for the settings file (in path pointed by "this->settingsFilePath")
         bool bSettingsFromPython = false; // Flag set once when experiment setting from python node is received
 
         std::string subImgMsgName = ""; // Topic to subscribe to receive RGB images from a python node
@@ -88,7 +87,7 @@ class MonocularNode : public rclcpp::Node
         
         //* Helper functions
         // ORB_SLAM3::eigenMatXf convertToEigenMat(const std_msgs::msg::Float32MultiArray& msg); // Helper method, converts semantic matrix eigenMatXf, a Eigen 4x4 float matrix
-        void initializeOrbSLAM(std::string &configFileString); //* Method to bind an initialized VSLAM framework to this node
+        void initializeOrbSLAM(); //* Method to bind an initialized VSLAM framework to this node
         double extract_timestamp_from_header(const builtin_interfaces::msg::Time &stamp);
 };
 
