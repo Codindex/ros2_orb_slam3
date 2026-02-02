@@ -922,7 +922,7 @@ void LocalMapping::KeyFrameCulling()
     int count=0;
 
     // Compoute last KF from optimizable window:
-    unsigned int last_ID;
+    unsigned int last_ID = 0;
     if (mbInertial)
     {
         int count = 0;

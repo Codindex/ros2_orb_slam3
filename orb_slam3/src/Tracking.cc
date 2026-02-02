@@ -661,7 +661,10 @@ bool Tracking::ParseCamParamFile(cv::FileStorage &fSettings)
     string sCameraName = fSettings["Camera.type"];
     if(sCameraName == "PinHole")
     {
-        float fx, fy, cx, cy;
+        float fx = 0.0;
+        float fy = 0.0;
+        float cx = 0.0;
+        float cy = 0.0;
         mImageScale = 1.f;
 
         // Camera calibration parameters
@@ -817,8 +820,16 @@ bool Tracking::ParseCamParamFile(cv::FileStorage &fSettings)
     }
     else if(sCameraName == "KannalaBrandt8")
     {
-        float fx, fy, cx, cy;
-        float k1, k2, k3, k4;
+        float fx = 0.0;
+        float fy = 0.0;
+        float cx = 0.0;
+        float cy = 0.0;
+
+        float k1 = 0.0;
+        float k2 = 0.0;
+        float k3 = 0.0;
+        float k4 = 0.0;
+
         mImageScale = 1.f;
 
         // Camera calibration parameters
@@ -1253,8 +1264,12 @@ bool Tracking::ParseCamParamFile(cv::FileStorage &fSettings)
 bool Tracking::ParseORBParamFile(cv::FileStorage &fSettings)
 {
     bool b_miss_params = false;
-    int nFeatures, nLevels, fIniThFAST, fMinThFAST;
-    float fScaleFactor;
+    int nFeatures = 0;
+    int nLevels = 0;
+    int fIniThFAST = 0;
+    int fMinThFAST = 0;
+
+    float fScaleFactor = 0.0;
 
     cv::FileNode node = fSettings["ORBextractor.nFeatures"];
     if(!node.empty() && node.isInt())
@@ -1371,7 +1386,10 @@ bool Tracking::ParseIMUParamFile(cv::FileStorage &fSettings)
 
 
 
-    float Ng, Na, Ngw, Naw;
+    float Ng = 0.0;
+    float Na = 0.0;
+    float Ngw = 0.0;
+    float Naw = 0.0;
 
     node = fSettings["IMU.Frequency"];
     if(!node.empty() && node.isInt())
@@ -1959,7 +1977,7 @@ void Tracking::Track()
     else
     {
         // System is initialized. Track Frame.
-        bool bOK;
+        bool bOK = false;
 
 #ifdef REGISTER_TIMES
         std::chrono::steady_clock::time_point time_StartPosePred = std::chrono::steady_clock::now();
