@@ -389,7 +389,7 @@ void LocalMapping::MapPointCulling()
 void LocalMapping::CreateNewMapPoints()
 {
     // Retrieve neighbor keyframes in covisibility graph
-    int nn = 10;
+    u_int nn = 10;
     // For stereo inertial case
     if(mbMonocular)
         nn=30;
@@ -398,7 +398,7 @@ void LocalMapping::CreateNewMapPoints()
     if (mbInertial)
     {
         KeyFrame* pKF = mpCurrentKeyFrame;
-        int count=0;
+        u_int count=0;
         while((vpNeighKFs.size()<=nn)&&(pKF->mPrevKF)&&(count++<nn))
         {
             vector<KeyFrame*>::iterator it = std::find(vpNeighKFs.begin(), vpNeighKFs.end(), pKF->mPrevKF);
@@ -1177,7 +1177,7 @@ void LocalMapping::InitializeIMU(float priorG, float priorA, bool bFIBA)
         return;
 
     float minTime;
-    int nMinKF;
+    u_int nMinKF;
     if (mbMonocular)
     {
         minTime = 2.0;

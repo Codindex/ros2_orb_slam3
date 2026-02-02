@@ -661,8 +661,8 @@ void System::SaveTrajectoryEuRoC(const string &filename)
     }*/
 
     vector<Map*> vpMaps = mpAtlas->GetAllMaps();
-    int numMaxKFs = 0;
-    Map* pBiggerMap;
+    Map* pBiggerMap(vpMaps[0]);
+    u_int numMaxKFs = pBiggerMap->GetAllKeyFrames().size();
     std::cout << "There are " << std::to_string(vpMaps.size()) << " maps in the atlas" << std::endl;
     for(Map* pMap :vpMaps)
     {
@@ -1050,8 +1050,8 @@ void System::SaveKeyFrameTrajectoryEuRoC(const string &filename)
     cout << endl << "Saving keyframe trajectory to " << filename << " ..." << endl;
 
     vector<Map*> vpMaps = mpAtlas->GetAllMaps();
-    Map* pBiggerMap;
-    int numMaxKFs = 0;
+    Map* pBiggerMap(vpMaps[0]);
+    u_int numMaxKFs = pBiggerMap->GetAllKeyFrames().size();
     for(Map* pMap :vpMaps)
     {
         if(pMap && pMap->GetAllKeyFrames().size() > numMaxKFs)

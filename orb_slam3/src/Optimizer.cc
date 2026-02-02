@@ -3201,7 +3201,7 @@ void Optimizer::InertialOptimization(Map *pMap, Eigen::Matrix3d &Rwg, double &sc
     Rwg = VGDir->estimate().Rwg;
 
     //Keyframes velocities and biases
-    const int N = vpKFs.size();
+    const u_int N = vpKFs.size();
     for(size_t i=0; i<N; i++)
     {
         KeyFrame* pKFi = vpKFs[i];
@@ -3366,7 +3366,7 @@ void Optimizer::InertialOptimization(Map *pMap, Eigen::Vector3d &bg, Eigen::Vect
     IMU::Bias b (vb[3],vb[4],vb[5],vb[0],vb[1],vb[2]);
 
     //Keyframes velocities and biases
-    const int N = vpKFs.size();
+    const u_int N = vpKFs.size();
     for(size_t i=0; i<N; i++)
     {
         KeyFrame* pKFi = vpKFs[i];

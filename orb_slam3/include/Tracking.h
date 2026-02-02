@@ -304,11 +304,11 @@ protected:
     bool mInsertKFsLost;
 
     //New KeyFrame rules (according to fps)
-    int mMinFrames;
-    int mMaxFrames;
+    u_int mMinFrames;
+    u_int mMaxFrames;
 
     int mnFirstImuFrameId;
-    int mnFramesToResetIMU;
+    u_int mnFramesToResetIMU;
 
     // Threshold close/far points
     // Points seen as close by the stereo/RGBD sensor are considered reliable
