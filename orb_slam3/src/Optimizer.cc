@@ -2503,7 +2503,7 @@ void Optimizer::LocalInertialBA(KeyFrame *pKF, bool *pbStopFlag, Map *pMap, int&
             break;
     }
 
-    bool bNonFixed = (lFixedKeyFrames.size() == 0);
+    // bool bNonFixed = (lFixedKeyFrames.size() == 0);
 
     // Setup optimizer
     g2o::SparseOptimizer optimizer;
@@ -3488,10 +3488,12 @@ void Optimizer::InertialOptimization(Map *pMap, Eigen::Matrix3d &Rwg, double &sc
     optimizer.setVerbose(false);
     optimizer.initializeOptimization();
     optimizer.computeActiveErrors();
-    float err = optimizer.activeRobustChi2();
+    // float err = optimizer.activeRobustChi2();
+    optimizer.activeRobustChi2();
     optimizer.optimize(its);
     optimizer.computeActiveErrors();
-    float err_end = optimizer.activeRobustChi2();
+    // float err_end = optimizer.activeRobustChi2();
+    optimizer.activeRobustChi2();
     // Recover optimized data
     scale = VS->estimate();
     Rwg = VGDir->estimate().Rwg;
@@ -3499,7 +3501,7 @@ void Optimizer::InertialOptimization(Map *pMap, Eigen::Matrix3d &Rwg, double &sc
 
 void Optimizer::LocalBundleAdjustment(KeyFrame* pMainKF,vector<KeyFrame*> vpAdjustKF, vector<KeyFrame*> vpFixedKF, bool *pbStopFlag)
 {
-    bool bShowImages = false;
+    // bool bShowImages = false;
 
     vector<MapPoint*> vpMPs;
 
@@ -5296,7 +5298,7 @@ void Optimizer::OptimizeEssentialGraph4DoF(Map* pMap, KeyFrame* pLoopKF, KeyFram
                                        const LoopClosing::KeyFrameAndPose &CorrectedSim3,
                                        const map<KeyFrame *, set<KeyFrame *> > &LoopConnections)
 {
-    typedef g2o::BlockSolver< g2o::BlockSolverTraits<4, 4> > BlockSolver_4_4;
+    // typedef g2o::BlockSolver< g2o::BlockSolverTraits<4, 4> > BlockSolver_4_4;
 
     // Setup optimizer
     g2o::SparseOptimizer optimizer;
@@ -5368,7 +5370,7 @@ void Optimizer::OptimizeEssentialGraph4DoF(Map* pMap, KeyFrame* pLoopKF, KeyFram
     matLambda(0,0) = 1e3;
 
     // Set Loop edges
-    Edge4DoF* e_loop;
+    // Edge4DoF* e_loop;
     for(map<KeyFrame *, set<KeyFrame *> >::const_iterator mit = LoopConnections.begin(), mend=LoopConnections.end(); mit!=mend; mit++)
     {
         KeyFrame* pKF = mit->first;
@@ -5394,7 +5396,7 @@ void Optimizer::OptimizeEssentialGraph4DoF(Map* pMap, KeyFrame* pLoopKF, KeyFram
             e->setVertex(0, dynamic_cast<g2o::OptimizableGraph::Vertex*>(optimizer.vertex(nIDi)));
 
             e->information() = matLambda;
-            e_loop = e;
+            // e_loop = e;
             optimizer.addEdge(e);
 
             sInsertedEdges.insert(make_pair(min(nIDi,nIDj),max(nIDi,nIDj)));

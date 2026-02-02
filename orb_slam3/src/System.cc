@@ -123,7 +123,7 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     //Create KeyFrame Database
     mpKeyFrameDatabase = new KeyFrameDatabase(*mpVocabulary);
 
-    bool loadedAtlas = false;
+    // bool loadedAtlas = false;
     if(mStrLoadAtlasFromFile.empty())
     {
         //Create the Atlas
@@ -147,7 +147,7 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
 
         //cout << "KF in DB: " << mpKeyFrameDatabase->mnNumKFs << "; words: " << mpKeyFrameDatabase->mnNumWords << endl;
 
-        loadedAtlas = true;
+        // loadedAtlas = true;
 
         mpAtlas->CreateNewMap();
 
@@ -777,7 +777,7 @@ void System::SaveTrajectoryEuRoC(const string &filename, Map* pMap)
         return;
     }*/
 
-    int numMaxKFs = 0;
+    // int numMaxKFs = 0;
 
     vector<KeyFrame*> vpKFs = pMap->GetAllKeyFrames();
     sort(vpKFs.begin(),vpKFs.end(),KeyFrame::lId);
