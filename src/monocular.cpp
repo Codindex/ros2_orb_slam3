@@ -16,9 +16,13 @@ MonocularNode::MonocularNode() :Node("mono_camera_node_cpp")
     initializeOrbSLAM();
 
     subImgMsgName = this->get_parameter("camera_topic").as_string(); // topic to receive RGB image messages
+    pubOutput = subImgMsgName + "/orbslam3";
 
     //* subscrbite to the image messages coming from the Python driver node
     subImgMsg_subscription_= this->create_subscription<sensor_msgs::msg::CompressedImage>(subImgMsgName, 1, std::bind(&MonocularNode::Img_callback, this, _1));
+
+    output_publisher_ = this->create_publisher<ros2_orb_slam3::msg::TrackedCompressedImage>(pubOutput, 1);
+    output_publisher_;
 }
 
 //* Destructor
@@ -95,6 +99,20 @@ void MonocularNode::Img_callback(const sensor_msgs::msg::CompressedImage &msg)
     
     //* An example of what can be done after the pose w.r.t camera coordinate frame is computed by ORB SLAM3
     //Sophus::SE3f Twc = Tcw.inverse(); //* Pose with respect to global image coordinate, reserved for future use
+
+    // Uses beluga_ros package
+    auto transformMessage = tf2::toMsg(Tcw);
+
+    auto transformStamped = geometry_msgs::msg::TransformStamped();
+    transformStamped.header = cv_ptr->header;
+    transformStamped.transform = transformMessage;
+    transformStamped.child_frame_id;
+
+    auto trackedCompressedImage_message = ros2_orb_slam3::msg::TrackedCompressedImage();
+    trackedCompressedImage_message.transform = transformStamped;
+    trackedCompressedImage_message.image = msg;
+
+    output_publisher_->publish(trackedCompressedImage_message);
 }
 
 

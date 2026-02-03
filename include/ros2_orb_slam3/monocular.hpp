@@ -26,6 +26,7 @@
 #include <std_msgs/msg/string.hpp>
 #include <std_msgs/msg/bool.hpp>
 #include "sensor_msgs/msg/image.hpp"
+#include "ros2_orb_slam3/msg/tracked_compressed_image.hpp"
 using std::placeholders::_1; //* TODO why this is suggested in official tutorial
 
 // Include Eigen
@@ -34,6 +35,9 @@ using std::placeholders::_1; //* TODO why this is suggested in official tutorial
 
 // Include cv-bridge
 #include <cv_bridge/cv_bridge.h>
+
+#include <beluga/beluga.hpp>
+#include <beluga_ros/tf2_sophus.hpp>
 
 // Include OpenCV computer vision library
 #include <opencv2/opencv.hpp>
@@ -71,10 +75,11 @@ class MonocularNode : public rclcpp::Node
         bool bSettingsFromPython = false; // Flag set once when experiment setting from python node is received
 
         std::string subImgMsgName = ""; // Topic to subscribe to receive RGB images from a python node
-        std::string subTimestepMsgName = ""; // Topic to subscribe to receive the timestep related to the 
+        std::string pubOutput = ""; // Topic to publish the OrbSLAM3 output
 
         //* Definitions of publisher and subscribers
         rclcpp::Subscription<sensor_msgs::msg::CompressedImage>::SharedPtr subImgMsg_subscription_;
+        rclcpp::Publisher<ros2_orb_slam3::msg::TrackedCompressedImage>::SharedPtr output_publisher_;
 
         //* ORB_SLAM3 related variables
         ORB_SLAM3::System *pAgent; // pointer to a ORB SLAM3 object
