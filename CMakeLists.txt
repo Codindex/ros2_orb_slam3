@@ -19,7 +19,9 @@ find_package(rclcpp REQUIRED)
 find_package(rclpy REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
 # find_package(your_custom_msg_interface REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(OpenCV 4.2 REQUIRED)
 find_package(Eigen3 3.3.0 REQUIRED) # Matched with Sophus
@@ -53,6 +55,7 @@ set(THIS_PACKAGE_INCLUDE_DEPENDS
   rclpy
   std_msgs
   sensor_msgs
+  geometry_msgs
   # your_custom_msg_interface
   cv_bridge
   image_transport
@@ -154,6 +157,16 @@ set(g2o_PATH "${PROJECT_SOURCE_DIR}/orb_slam3/Thirdparty/g2o/lib/libg2o.so")
 install(FILES ${DBoW2_PATH} DESTINATION lib)
 install(FILES ${g2o_PATH} DESTINATION lib)
 
+# Set message interfaces
+set(msg_files
+  "msg/TrackedCompressedImage.msg"
+)
+
+# Install the new message interface
+rosidl_generate_interfaces(${PROJECT_NAME}
+  ${msg_files}
+  DEPENDENCIES sensor_msgs geometry_msgs
+)
 
 # Add executable
 add_executable(mono_node_cpp
@@ -177,7 +190,13 @@ ament_target_dependencies(mono_camera_node_cpp
   PUBLIC ${THIS_PACKAGE_INCLUDE_DEPENDS}
 )
 
-target_link_libraries(mono_camera_node_cpp PUBLIC orb_slam3_lib) # Link a node with the internal shared library
+# With the new message interface
+rosidl_get_typesupport_target(cpp_typesupport_target
+  ${PROJECT_NAME} rosidl_typesupport_cpp)
+
+target_link_libraries(mono_camera_node_cpp PUBLIC
+  "${cpp_typesupport_target}"
+  orb_slam3_lib) # Link a node with the internal shared library
 
 
 # Install all the header files in package/package/include
@@ -200,20 +219,21 @@ ament_export_include_directories(include)
 ament_export_dependencies(
   orb_slam3_lib
   ${THIS_PACKAGE_INCLUDE_DEPENDS}
+  rosidl_default_runtime
 )
 
 
 # Python node
 # Install Python modules, submodules
-ament_python_install_package(${PROJECT_NAME}) # Install the modules in ros2_orb_slam3/ros2_orb_slam3 folder
+# ament_python_install_package(${PROJECT_NAME}) # Install the modules in ros2_orb_slam3/ros2_orb_slam3 folder (conflict with "rosidl_generate_interfaces" !)
 
-# Install Python executibles
-install(PROGRAMS
-  scripts/mono_driver_node.py
-  # New Python scripts here
-  scripts/zed_left_driver_node.py
-  DESTINATION lib/${PROJECT_NAME}
-)
+# # Install Python executibles
+# install(PROGRAMS
+#   scripts/mono_driver_node.py
+#   # New Python scripts here
+#   scripts/zed_left_driver_node.py
+#   DESTINATION lib/${PROJECT_NAME}
+# )
 
 # Install launch files.
 install(DIRECTORY

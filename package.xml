@@ -9,11 +9,13 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
   <buildtool_depend>ament_cmake_python</buildtool_depend>
+  <buildtool_depend>rosidl_default_generators</buildtool_depend>
 
   <build_depend>rclcpp</build_depend>
   <build_depend>rclpy</build_depend>
   <build_depend>std_msgs</build_depend>
   <build_depend>sensor_msgs</build_depend>
+  <build_depend>geometry_msgs</build_depend>
   <build_depend>cv_bridge</build_depend>
   <build_depend>image_transport</build_depend>
   <build_depend>pangolin</build_depend>
@@ -31,6 +33,7 @@
   <exec_depend>rclpy</exec_depend>
   <exec_depend>std_msgs</exec_depend>
   <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
   <exec_depend>cv_bridge</exec_depend>
   <exec_depend>image_transport</exec_depend>
   <exec_depend>pangolin</exec_depend>
@@ -40,9 +43,12 @@
   <exec_depend>python3-natsort</exec_depend>
   <exec_depend>beluga</exec_depend>
   <exec_depend>beluga_ros</exec_depend>
+  <exec_depend>rosidl_default_runtime</exec_depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
+
+  <member_of_group>rosidl_interface_packages</member_of_group>
 
   <export>
     <build_type>ament_cmake</build_type>
