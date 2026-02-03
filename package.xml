@@ -22,6 +22,7 @@
   <!-- <build_depend>libcrypto</build_depend> -->
   <build_depend>python3-natsort</build_depend>
   <build_depend>beluga</build_depend>
+  <build_depend>beluga_ros</build_depend>
 
   <!-- As suggested by the official tutorial, add your custom message interfaces as follows -->
   <!-- <depend>your_custom_msg_interface</depend>  -->
@@ -38,6 +39,7 @@
   <!-- <exec_depend>libcrypto</exec_depend> -->
   <exec_depend>python3-natsort</exec_depend>
   <exec_depend>beluga</exec_depend>
+  <exec_depend>beluga_ros</exec_depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
