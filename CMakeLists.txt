@@ -25,6 +25,8 @@ find_package(OpenCV 4.2 REQUIRED)
 find_package(Eigen3 3.3.0 REQUIRED) # Matched with Sophus
 find_package(Pangolin REQUIRED)
 find_package(image_transport REQUIRED)
+find_package(beluga REQUIRED)
+find_package(beluga_ros REQUIRED)
 
 
 # Header file locations [C++ node]
@@ -54,6 +56,8 @@ set(THIS_PACKAGE_INCLUDE_DEPENDS
   # your_custom_msg_interface
   cv_bridge
   image_transport
+  beluga
+  beluga_ros
   OpenCV
   Eigen3
   Pangolin
