@@ -198,6 +198,24 @@ target_link_libraries(mono_camera_node_cpp PUBLIC
   "${cpp_typesupport_target}"
   orb_slam3_lib) # Link a node with the internal shared library
 
+# Add executable
+add_executable(mono_camera_imu_node_cpp
+  src/monocular_imu_main.cpp
+  src/monocular_imu.cpp
+)
+
+ament_target_dependencies(mono_camera_imu_node_cpp
+  PUBLIC ${THIS_PACKAGE_INCLUDE_DEPENDS}
+)
+
+# With the new message interface
+rosidl_get_typesupport_target(cpp_typesupport_target
+  ${PROJECT_NAME} rosidl_typesupport_cpp)
+
+target_link_libraries(mono_camera_imu_node_cpp PUBLIC
+  "${cpp_typesupport_target}"
+  orb_slam3_lib) # Link a node with the internal shared library
+
 
 # Install all the header files in package/package/include
 install (DIRECTORY include/ 
@@ -205,7 +223,7 @@ install (DIRECTORY include/
 )
 
 # Install our nodes and library
-install(TARGETS mono_node_cpp mono_camera_node_cpp orb_slam3_lib
+install(TARGETS mono_node_cpp mono_camera_node_cpp mono_camera_imu_node_cpp orb_slam3_lib
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION lib/${PROJECT_NAME}
