@@ -55,7 +55,7 @@ using std::placeholders::_1; //* TODO why this is suggested in official tutorial
 
 
 //* Node specific definitions
-class MonocularNode : public rclcpp::Node
+class MonocularIMUNode : public rclcpp::Node
 {   
     //* This slam node inherits from both rclcpp and ORB_SLAM3::System classes
     //* public keyword needs to come before the class constructor and anything else
@@ -63,9 +63,9 @@ class MonocularNode : public rclcpp::Node
     double timestamp; // Timestep data received from the python node
 
     //* Class constructor
-    MonocularNode(); // Constructor 
+    MonocularIMUNode(); // Constructor 
 
-    ~MonocularNode(); // Destructor
+    ~MonocularIMUNode(); // Destructor
         
     private:
         

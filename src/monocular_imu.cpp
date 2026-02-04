@@ -1,8 +1,8 @@
 //* Includes
-#include "ros2_orb_slam3/monocular.hpp"
+#include "ros2_orb_slam3/monocular_imu.hpp"
 
 //* Constructor
-MonocularNode::MonocularNode() :Node("mono_camera_node_cpp")
+MonocularIMUNode::MonocularIMUNode() :Node("mono_camera_imu_node_cpp")
 {
     // Declare parameters to be passsed from command line
     // https://roboticsbackend.com/rclcpp-params-tutorial-get-set-ros2-params-with-cpp/
@@ -19,14 +19,14 @@ MonocularNode::MonocularNode() :Node("mono_camera_node_cpp")
     pubOutput = subImgMsgName + "/orbslam3";
 
     //* subscrbite to the image messages coming from the Python driver node
-    subImgMsg_subscription_= this->create_subscription<sensor_msgs::msg::CompressedImage>(subImgMsgName, 1, std::bind(&MonocularNode::Img_callback, this, _1));
+    subImgMsg_subscription_= this->create_subscription<sensor_msgs::msg::CompressedImage>(subImgMsgName, 1, std::bind(&MonocularIMUNode::Img_callback, this, _1));
 
     output_publisher_ = this->create_publisher<ros2_orb_slam3::msg::TrackedCompressedImage>(pubOutput, 1);
     output_publisher_;
 }
 
 //* Destructor
-MonocularNode::~MonocularNode()
+MonocularIMUNode::~MonocularIMUNode()
 {   
     
     // Stop all threads
@@ -38,7 +38,7 @@ MonocularNode::~MonocularNode()
 }
 
 //* Method to bind an initialized VSLAM framework to this node
-void MonocularNode::initializeOrbSLAM(){
+void MonocularIMUNode::initializeOrbSLAM(){
     //* Find path to home directory
     std::string homeDir = getenv("HOME");
     // std::cout<<"Home: "<<homeDir<<std::endl;
@@ -61,17 +61,17 @@ void MonocularNode::initializeOrbSLAM(){
     enableOpenCVWindow = true; // Shows OpenCV window output
     
     pAgent = new ORB_SLAM3::System(vocFilePath, settingsFilePath, sensorType, enablePangolinWindow);
-    std::cout << "MonocularNode node initialized" << std::endl; // TODO needs a better message
+    std::cout << "MonocularIMUNode node initialized" << std::endl; // TODO needs a better message
 }
 
 //*Helper that processes timestep on the image's header
-double MonocularNode::extract_timestamp_from_header(const builtin_interfaces::msg::Time &stamp)
+double MonocularIMUNode::extract_timestamp_from_header(const builtin_interfaces::msg::Time &stamp)
 {
     return stamp.sec*1.0E9 + stamp.nanosec*1.0;
 }
 
 //* Callback to process image message and run SLAM node
-void MonocularNode::Img_callback(const sensor_msgs::msg::CompressedImage &msg)
+void MonocularIMUNode::Img_callback(const sensor_msgs::msg::CompressedImage &msg)
 {
     // Initialize
     cv_bridge::CvImagePtr cv_ptr; //* Does not create a copy, memory efficient
