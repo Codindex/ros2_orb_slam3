@@ -59,7 +59,7 @@ IMU.NoiseAcc: 3.2e-3
 IMU.GyroWalk: 3.0e-5
 IMU.AccWalk: 2.44e-4
 
-IMU.Frequency: 15
+IMU.Frequency: 400.0
 # From ros_tf
 IMU.T_b_c1: !!opencv-matrix
    rows: 4
