@@ -101,7 +101,18 @@ void MonocularNode::Img_callback(const sensor_msgs::msg::CompressedImage &msg)
     //Sophus::SE3f Twc = Tcw.inverse(); //* Pose with respect to global image coordinate, reserved for future use
 
     // Uses beluga_ros package
-    auto transformMessage = tf2::toMsg(Tcw);
+    auto transformOrbslam = tf2::toMsg(Tcw);
+
+    // Convert to ROS coordinates
+    auto transformMessage = geometry_msgs::msg::Transform();
+    transformMessage.translation.x = -transformOrbslam.translation.z;
+    transformMessage.translation.y = -transformOrbslam.translation.x;
+    transformMessage.translation.z = transformOrbslam.translation.y;
+
+    transformMessage.rotation.x = -transformOrbslam.rotation.z;
+    transformMessage.rotation.y = -transformOrbslam.rotation.x;
+    transformMessage.rotation.z = transformOrbslam.rotation.y;
+    transformMessage.rotation.w = transformOrbslam.rotation.w;
 
     auto transformStamped = geometry_msgs::msg::TransformStamped();
     transformStamped.header = cv_ptr->header;
