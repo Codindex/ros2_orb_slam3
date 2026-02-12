@@ -10,7 +10,7 @@ StereoNode::StereoNode() :Node("stereo_camera_node_cpp")
     // std::cout<<"VLSAM NODE STARTED\n\n";
     RCLCPP_INFO(this->get_logger(), "\nORB-SLAM3-V1 NODE STARTED");
 
-    this->declare_parameter("orb_slam3_config", "Zed_left_camera.yaml");
+    this->declare_parameter("orb_slam3_config", "Zed_2i_camera.yaml");
     this->declare_parameter("camera_topic", "/mono_py_driver/img_msg");
 
     initializeOrbSLAM();
