@@ -12,6 +12,7 @@ StereoNode::StereoNode() :Node("stereo_camera_node_cpp")
 
     this->declare_parameter("orb_slam3_config", "Zed_2i_camera.yaml");
     this->declare_parameter("camera_topic", "/mono_py_driver/img_msg");
+    this->declare_parameter("right_camera_topic", "/zed/zed_node/right_raw/image_raw_color/compressed");
 
     initializeOrbSLAM();
 
