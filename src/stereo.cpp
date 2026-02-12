@@ -61,7 +61,7 @@ void StereoNode::initializeOrbSLAM(){
     auto configFileString = this->get_parameter("orb_slam3_config").as_string();
 
     //* Build .yaml`s file path
-    auto settingsFilePath = homeDir + "/" + packagePath + "orb_slam3/config/" + "Monocular" + "/" + configFileString; // "Monocular" will be a variable in a next version
+    auto settingsFilePath = homeDir + "/" + packagePath + "orb_slam3/config/" + "Stereo" + "/" + configFileString; // "Stereo" will be a variable in a next version
 
     RCLCPP_INFO(this->get_logger(), "Path to settings file: %s", settingsFilePath.c_str());
     
