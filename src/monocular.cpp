@@ -22,7 +22,6 @@ MonocularNode::MonocularNode() :Node("mono_camera_node_cpp")
     subImgMsg_subscription_= this->create_subscription<sensor_msgs::msg::CompressedImage>(subImgMsgName, 1, std::bind(&MonocularNode::Img_callback, this, _1));
 
     output_publisher_ = this->create_publisher<ros2_orb_slam3::msg::TrackedCompressedImage>(pubOutput, 1);
-    output_publisher_;
 }
 
 //* Destructor
