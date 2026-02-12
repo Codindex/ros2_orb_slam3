@@ -17,6 +17,9 @@ StereoNode::StereoNode() :Node("stereo_camera_node_cpp")
 
     subLeftImgMsgName = this->get_parameter("camera_topic").as_string(); // topic to receive RGB image messages
     subRightImgMsgName = this->get_parameter("right_camera_topic").as_string();
+
+    RCLCPP_INFO(this->get_logger(), "Left topic: %s", subLeftImgMsgName.c_str());
+    RCLCPP_INFO(this->get_logger(), "Right topic: %s", subRightImgMsgName.c_str());
     
     auto node_namespace = this->get_namespace();
     auto node_name = this->get_name();
@@ -80,6 +83,8 @@ void StereoNode::initializeOrbSLAM(){
 void StereoNode::Left_callback(const sensor_msgs::msg::CompressedImage &msg)
 {
     left_msg = msg;
+    // RCLCPP_INFO(this->get_logger(), "Left image timestamp: %f", extract_timestamp_from_header(left_msg.header.stamp));
+    // RCLCPP_INFO(this->get_logger(), "Right image timestamp: %f", extract_timestamp_from_header(right_msg.header.stamp));
     if (right_msg.header.stamp == left_msg.header.stamp)
     {
         Stereo_callback();
@@ -89,6 +94,8 @@ void StereoNode::Left_callback(const sensor_msgs::msg::CompressedImage &msg)
 void StereoNode::Right_callback(const sensor_msgs::msg::CompressedImage &msg)
 {
     right_msg = msg;
+    // RCLCPP_INFO(this->get_logger(), "Left image timestamp (from right): %f", extract_timestamp_from_header(left_msg.header.stamp));
+    // RCLCPP_INFO(this->get_logger(), "Right image timestamp (from right): %f", extract_timestamp_from_header(right_msg.header.stamp));
     if (right_msg.header.stamp == left_msg.header.stamp)
     {
         Stereo_callback();
