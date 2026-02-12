@@ -12,11 +12,11 @@ def generate_launch_description():
 
     orbslam_namespace_launch_arg = DeclareLaunchArgument(
         'orbslam_namespace',
-        default_value='mono_py_driver'
+        default_value='orbslam3'
     )
     orbslam_node_name_launch_arg = DeclareLaunchArgument(
         'orbslam_node_name',
-        default_value='driver_test'
+        default_value='stereo_camera'
     )
     ros_parameters_file_launch_arg = DeclareLaunchArgument(
         'ros_parameters_file',
