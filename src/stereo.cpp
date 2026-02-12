@@ -150,7 +150,7 @@ void StereoNode::Stereo_callback()
 
     auto trackedCompressedImage_message = ros2_orb_slam3::msg::TrackedCompressedImage();
     trackedCompressedImage_message.transform = transformStamped;
-    trackedCompressedImage_message.image = left_msg;
+    trackedCompressedImage_message.image = *cv_left_ptr->toCompressedImageMsg();
 
     output_publisher_->publish(trackedCompressedImage_message);
 }
