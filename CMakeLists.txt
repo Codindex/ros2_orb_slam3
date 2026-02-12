@@ -186,8 +186,8 @@ add_executable(mono_camera_node_cpp
   src/monocular.cpp
 )
 add_executable(stereo_camera_node_cpp
-  src/monocular_main.cpp
-  src/monocular.cpp
+  src/stereo_main.cpp
+  src/stereo.cpp
 )
 
 ament_target_dependencies(mono_camera_node_cpp
