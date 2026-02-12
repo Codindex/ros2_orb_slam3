@@ -74,7 +74,8 @@ class StereoNode : public rclcpp::Node
         std::string OPENCV_WINDOW = ""; // Set during initialization
         bool bSettingsFromPython = false; // Flag set once when experiment setting from python node is received
 
-        std::string subImgMsgName = ""; // Topic to subscribe to receive RGB images from a python node
+        std::string subLeftImgMsgName = ""; // Topic to subscribe to receive RGB images from a python node
+        std::string subRightImgMsgName = "";
         std::string pubTransform = ""; // Topic to publish the tf2 output only
         std::string pubTransformStamped = ""; // Topic to publish the tf2 output only, with timestamp
         std::string pubOutput = ""; // Topic to publish the OrbSLAM3 output
@@ -83,7 +84,8 @@ class StereoNode : public rclcpp::Node
         sensor_msgs::msg::CompressedImage right_msg;
 
         //* Definitions of publisher and subscribers
-        rclcpp::Subscription<sensor_msgs::msg::CompressedImage>::SharedPtr subImgMsg_subscription_;
+        rclcpp::Subscription<sensor_msgs::msg::CompressedImage>::SharedPtr subLeftImgMsg_subscription_;
+        rclcpp::Subscription<sensor_msgs::msg::CompressedImage>::SharedPtr subRightImgMsg_subscription_;
         rclcpp::Publisher<geometry_msgs::msg::Transform>::SharedPtr transform_publisher_;
         rclcpp::Publisher<geometry_msgs::msg::TransformStamped>::SharedPtr transformStamped_publisher_;
         rclcpp::Publisher<ros2_orb_slam3::msg::TrackedCompressedImage>::SharedPtr output_publisher_;

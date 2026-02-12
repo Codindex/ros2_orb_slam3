@@ -15,7 +15,8 @@ StereoNode::StereoNode() :Node("stereo_camera_node_cpp")
 
     initializeOrbSLAM();
 
-    subImgMsgName = this->get_parameter("camera_topic").as_string(); // topic to receive RGB image messages
+    subLeftImgMsgName = this->get_parameter("camera_topic").as_string(); // topic to receive RGB image messages
+    subRightImgMsgName = this->get_parameter("right_camera_topic").as_string();
     
     auto node_namespace = this->get_namespace();
     auto node_name = this->get_name();
@@ -25,10 +26,11 @@ StereoNode::StereoNode() :Node("stereo_camera_node_cpp")
 
     pubTransform = "tf";
     pubTransformStamped = "tf_stamped";
-    pubOutput = subImgMsgName + "/orbslam3";
+    pubOutput = subLeftImgMsgName + "/orbslam3";
 
     //* subscrbite to the image messages coming from the Python driver node
-    subImgMsg_subscription_= this->create_subscription<sensor_msgs::msg::CompressedImage>(subImgMsgName, 1, std::bind(&StereoNode::Img_callback, this, _1));
+    subLeftImgMsg_subscription_= this->create_subscription<sensor_msgs::msg::CompressedImage>(subLeftImgMsgName, 1, std::bind(&StereoNode::Left_callback, this, _1));
+    subRightImgMsg_subscription_= this->create_subscription<sensor_msgs::msg::CompressedImage>(subRightImgMsgName, 1, std::bind(&StereoNode::Right_callback, this, _1));
 
     transform_publisher_ = this->create_publisher<geometry_msgs::msg::Transform>(pubTransform, 1);
     transformStamped_publisher_ = this->create_publisher<geometry_msgs::msg::TransformStamped>(pubTransformStamped, 1);

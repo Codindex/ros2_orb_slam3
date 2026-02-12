@@ -2,3 +2,4 @@
   ros__parameters:
     orb_slam3_config: Zed_left_camera.yaml
     camera_topic: /zed/zed_node/left_raw/image_raw_color/compressed
+    right_camera_topic: /zed/zed_node/right_raw/image_raw_color/compressed
