@@ -17,7 +17,7 @@
 #--------------------------------------------------------------------------------------------
 File.version: "1.0"
 
-Camera.type: "PinHole"
+Camera.type: "Rectified"
 # Original settings
 # width: 752
 # height: 480
@@ -49,6 +49,9 @@ Camera1.cy: 269.12518310546875
 # Camera1.p2: 0.0
 
 Stereo.b: 0.120 # From Stereolabs specs
+
+# Close/Far threshold. Baseline times.
+Stereo.ThDepth: 40.0
 
 #--------------------------------------------------------------------------------------------
 # ORB Parameters
