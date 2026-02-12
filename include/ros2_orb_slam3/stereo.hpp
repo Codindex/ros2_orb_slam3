@@ -80,6 +80,9 @@ class StereoNode : public rclcpp::Node
         std::string pubTransformStamped = ""; // Topic to publish the tf2 output only, with timestamp
         std::string pubOutput = ""; // Topic to publish the OrbSLAM3 output
 
+        rclcpp::CallbackGroup::SharedPtr left_cb_group_;
+        rclcpp::CallbackGroup::SharedPtr right_cb_group_;
+
         sensor_msgs::msg::CompressedImage left_msg;
         sensor_msgs::msg::CompressedImage right_msg;
 

@@ -32,9 +32,17 @@ StereoNode::StereoNode() :Node("stereo_camera_node_cpp")
     pubTransformStamped = "tf_stamped";
     pubOutput = subLeftImgMsgName + "/orbslam3";
 
+    left_cb_group_ = this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
+    right_cb_group_ = this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
+
+    rclcpp::SubscriptionOptions left_options;
+    left_options.callback_group = left_cb_group_;
+    rclcpp::SubscriptionOptions right_options;
+    right_options.callback_group = right_cb_group_;
+
     //* subscrbite to the image messages coming from the Python driver node
-    subLeftImgMsg_subscription_= this->create_subscription<sensor_msgs::msg::CompressedImage>(subLeftImgMsgName, 1, std::bind(&StereoNode::Left_callback, this, _1));
-    subRightImgMsg_subscription_= this->create_subscription<sensor_msgs::msg::CompressedImage>(subRightImgMsgName, 1, std::bind(&StereoNode::Right_callback, this, _1));
+    subLeftImgMsg_subscription_= this->create_subscription<sensor_msgs::msg::CompressedImage>(subLeftImgMsgName, 1, std::bind(&StereoNode::Left_callback, this, _1), left_options);
+    subRightImgMsg_subscription_= this->create_subscription<sensor_msgs::msg::CompressedImage>(subRightImgMsgName, 1, std::bind(&StereoNode::Right_callback, this, _1), right_options);
 
     transform_publisher_ = this->create_publisher<geometry_msgs::msg::Transform>(pubTransform, 1);
     transformStamped_publisher_ = this->create_publisher<geometry_msgs::msg::TransformStamped>(pubTransformStamped, 1);
