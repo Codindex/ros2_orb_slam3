@@ -185,8 +185,15 @@ add_executable(mono_camera_node_cpp
   src/monocular_main.cpp
   src/monocular.cpp
 )
+add_executable(stereo_camera_node_cpp
+  src/monocular_main.cpp
+  src/monocular.cpp
+)
 
 ament_target_dependencies(mono_camera_node_cpp
+  PUBLIC ${THIS_PACKAGE_INCLUDE_DEPENDS}
+)
+ament_target_dependencies(stereo_camera_node_cpp
   PUBLIC ${THIS_PACKAGE_INCLUDE_DEPENDS}
 )
 
@@ -196,7 +203,12 @@ rosidl_get_typesupport_target(cpp_typesupport_target
 
 target_link_libraries(mono_camera_node_cpp PUBLIC
   "${cpp_typesupport_target}"
-  orb_slam3_lib) # Link a node with the internal shared library
+  orb_slam3_lib
+) # Link a node with the internal shared library
+target_link_libraries(stereo_camera_node_cpp PUBLIC
+  "${cpp_typesupport_target}"
+  orb_slam3_lib
+) # Link a node with the internal shared library
 
 
 # Install all the header files in package/package/include
@@ -205,7 +217,7 @@ install (DIRECTORY include/
 )
 
 # Install our nodes and library
-install(TARGETS mono_node_cpp mono_camera_node_cpp orb_slam3_lib
+install(TARGETS mono_node_cpp mono_camera_node_cpp stereo_camera_node_cpp orb_slam3_lib
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION lib/${PROJECT_NAME}
