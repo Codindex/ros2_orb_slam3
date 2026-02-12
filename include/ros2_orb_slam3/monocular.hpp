@@ -75,10 +75,14 @@ class MonocularNode : public rclcpp::Node
         bool bSettingsFromPython = false; // Flag set once when experiment setting from python node is received
 
         std::string subImgMsgName = ""; // Topic to subscribe to receive RGB images from a python node
+        std::string pubTransform = ""; // Topic to publish the tf2 output only
+        std::string pubTransformStamped = ""; // Topic to publish the tf2 output only, with timestamp
         std::string pubOutput = ""; // Topic to publish the OrbSLAM3 output
 
         //* Definitions of publisher and subscribers
         rclcpp::Subscription<sensor_msgs::msg::CompressedImage>::SharedPtr subImgMsg_subscription_;
+        rclcpp::Publisher<geometry_msgs::msg::Transform>::SharedPtr transform_publisher_;
+        rclcpp::Publisher<geometry_msgs::msg::TransformStamped>::SharedPtr transformStamped_publisher_;
         rclcpp::Publisher<ros2_orb_slam3::msg::TrackedCompressedImage>::SharedPtr output_publisher_;
 
         //* ORB_SLAM3 related variables

@@ -16,10 +16,22 @@ MonocularNode::MonocularNode() :Node("mono_camera_node_cpp")
     initializeOrbSLAM();
 
     subImgMsgName = this->get_parameter("camera_topic").as_string(); // topic to receive RGB image messages
+    
+    auto node_namespace = this->get_namespace();
+    auto node_name = this->get_name();
+
+    RCLCPP_INFO(this->get_logger(), "node_namespace %s", node_namespace);
+    RCLCPP_INFO(this->get_logger(), "node_name: %s", node_name);
+
+    pubTransform = "tf";
+    pubTransformStamped = "tf_stamped";
     pubOutput = subImgMsgName + "/orbslam3";
 
     //* subscrbite to the image messages coming from the Python driver node
     subImgMsg_subscription_= this->create_subscription<sensor_msgs::msg::CompressedImage>(subImgMsgName, 1, std::bind(&MonocularNode::Img_callback, this, _1));
+
+    transform_publisher_ = this->create_publisher<geometry_msgs::msg::Transform>(pubTransform, 1);
+    transformStamped_publisher_ = this->create_publisher<geometry_msgs::msg::TransformStamped>(pubTransformStamped, 1);
 
     output_publisher_ = this->create_publisher<ros2_orb_slam3::msg::TrackedCompressedImage>(pubOutput, 1);
 }
@@ -113,10 +125,14 @@ void MonocularNode::Img_callback(const sensor_msgs::msg::CompressedImage &msg)
     transformMessage.rotation.z = transformOrbslam.rotation.y;
     transformMessage.rotation.w = transformOrbslam.rotation.w;
 
+    transform_publisher_->publish(transformMessage);
+
     auto transformStamped = geometry_msgs::msg::TransformStamped();
     transformStamped.header = cv_ptr->header;
     transformStamped.transform = transformMessage;
     transformStamped.child_frame_id;
+
+    transformStamped_publisher_->publish(transformStamped);
 
     auto trackedCompressedImage_message = ros2_orb_slam3::msg::TrackedCompressedImage();
     trackedCompressedImage_message.transform = transformStamped;
