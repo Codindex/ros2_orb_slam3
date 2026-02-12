@@ -106,6 +106,8 @@ void StereoNode::Right_callback(const sensor_msgs::msg::CompressedImage &msg)
 void StereoNode::Stereo_callback()
 {
     // Initialize
+    auto left_img_msg = left_msg;
+    auto right_img_msg = right_msg;
     cv_bridge::CvImagePtr cv_left_ptr; //* Does not create a copy, memory efficient
     cv_bridge::CvImagePtr cv_right_ptr;
     // RCLCPP_INFO(this->get_logger(), "Received image");
@@ -114,8 +116,8 @@ void StereoNode::Stereo_callback()
     try
     {
         // RCLCPP_INFO(this->get_logger(), "Try creating pointer");
-        cv_left_ptr = cv_bridge::toCvCopy(left_msg); // Local scope
-        cv_right_ptr = cv_bridge::toCvCopy(right_msg);
+        cv_left_ptr = cv_bridge::toCvCopy(left_img_msg); // Local scope
+        cv_right_ptr = cv_bridge::toCvCopy(right_img_msg);
     }
     catch (cv_bridge::Exception &e)
     {
