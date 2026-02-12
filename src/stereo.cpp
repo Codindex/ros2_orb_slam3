@@ -75,6 +75,86 @@ void StereoNode::initializeOrbSLAM(){
     std::cout << "StereoNode node initialized" << std::endl; // TODO needs a better message
 }
 
+void StereoNode::Left_callback(const sensor_msgs::msg::CompressedImage &msg)
+{
+    left_msg = msg;
+    if (right_msg.header.stamp == left_msg.header.stamp)
+    {
+        Stereo_callback();
+    }
+}
+
+void StereoNode::Right_callback(const sensor_msgs::msg::CompressedImage &msg)
+{
+    right_msg = msg;
+    if (right_msg.header.stamp == left_msg.header.stamp)
+    {
+        Stereo_callback();
+    }
+}
+
+//* Callback to process image message pair and run SLAM node
+void StereoNode::Stereo_callback()
+{
+    // Initialize
+    cv_bridge::CvImagePtr cv_left_ptr; //* Does not create a copy, memory efficient
+    cv_bridge::CvImagePtr cv_right_ptr;
+    // RCLCPP_INFO(this->get_logger(), "Received image");
+    
+    //* Convert ROS image to openCV image
+    try
+    {
+        // RCLCPP_INFO(this->get_logger(), "Try creating pointer");
+        cv_left_ptr = cv_bridge::toCvCopy(left_msg); // Local scope
+        cv_right_ptr = cv_bridge::toCvCopy(right_msg);
+    }
+    catch (cv_bridge::Exception &e)
+    {
+        RCLCPP_ERROR(this->get_logger(),"Error reading image");
+        return;
+    }
+    // RCLCPP_INFO(this->get_logger(), "Pointer successfully created");
+
+    timestamp = extract_timestamp_from_header(cv_left_ptr->header.stamp);
+    // RCLCPP_INFO(this->get_logger(), "Timer extracted from header");
+    
+    //* Perform all ORB-SLAM3 operations in Stereo mode
+    //! Pose with respect to the camera coordinate frame not the world coordinate frame
+    Sophus::SE3f Tcw = pAgent->TrackStereo(cv_left_ptr->image, cv_right_ptr->image, timestamp); 
+    
+    //* An example of what can be done after the pose w.r.t camera coordinate frame is computed by ORB SLAM3
+    //Sophus::SE3f Twc = Tcw.inverse(); //* Pose with respect to global image coordinate, reserved for future use
+
+    // Uses beluga_ros package
+    auto transformOrbslam = tf2::toMsg(Tcw);
+
+    // Convert to ROS coordinates
+    auto transformMessage = geometry_msgs::msg::Transform();
+    transformMessage.translation.x = -transformOrbslam.translation.z;
+    transformMessage.translation.y = -transformOrbslam.translation.x;
+    transformMessage.translation.z = transformOrbslam.translation.y;
+
+    transformMessage.rotation.x = -transformOrbslam.rotation.z;
+    transformMessage.rotation.y = -transformOrbslam.rotation.x;
+    transformMessage.rotation.z = transformOrbslam.rotation.y;
+    transformMessage.rotation.w = transformOrbslam.rotation.w;
+
+    transform_publisher_->publish(transformMessage);
+
+    auto transformStamped = geometry_msgs::msg::TransformStamped();
+    transformStamped.header = cv_left_ptr->header;
+    transformStamped.transform = transformMessage;
+    transformStamped.child_frame_id;
+
+    transformStamped_publisher_->publish(transformStamped);
+
+    auto trackedCompressedImage_message = ros2_orb_slam3::msg::TrackedCompressedImage();
+    trackedCompressedImage_message.transform = transformStamped;
+    trackedCompressedImage_message.image = left_msg;
+
+    output_publisher_->publish(trackedCompressedImage_message);
+}
+
 //*Helper that processes timestep on the image's header
 double StereoNode::extract_timestamp_from_header(const builtin_interfaces::msg::Time &stamp)
 {

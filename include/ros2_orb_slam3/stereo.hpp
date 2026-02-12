@@ -79,6 +79,9 @@ class StereoNode : public rclcpp::Node
         std::string pubTransformStamped = ""; // Topic to publish the tf2 output only, with timestamp
         std::string pubOutput = ""; // Topic to publish the OrbSLAM3 output
 
+        sensor_msgs::msg::CompressedImage left_msg;
+        sensor_msgs::msg::CompressedImage right_msg;
+
         //* Definitions of publisher and subscribers
         rclcpp::Subscription<sensor_msgs::msg::CompressedImage>::SharedPtr subImgMsg_subscription_;
         rclcpp::Publisher<geometry_msgs::msg::Transform>::SharedPtr transform_publisher_;
@@ -92,7 +95,10 @@ class StereoNode : public rclcpp::Node
         bool enableOpenCVWindow = false; // Shows OpenCV window output
 
         //* ROS callbacks
-        void Img_callback(const sensor_msgs::msg::CompressedImage &msg); // Callback to process RGB image and semantic matrix sent by Python node
+        void Left_callback(const sensor_msgs::msg::CompressedImage &msg);
+        void Right_callback(const sensor_msgs::msg::CompressedImage &msg);
+        void Stereo_callback();
+        void Img_callback(const sensor_msgs::msg::CompressedImage &msg); // Callback to process RGB image and semantic matrix
         
         //* Helper functions
         // ORB_SLAM3::eigenMatXf convertToEigenMat(const std_msgs::msg::Float32MultiArray& msg); // Helper method, converts semantic matrix eigenMatXf, a Eigen 4x4 float matrix
