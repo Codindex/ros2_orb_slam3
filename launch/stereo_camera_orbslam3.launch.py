@@ -25,7 +25,7 @@ def generate_launch_description():
 
     orbslam3_node = Node(
         package='ros2_orb_slam3',
-        executable='mono_camera_node_cpp',
+        executable='stereo_camera_node_cpp',
         namespace=orbslam_namespace,
         name=orbslam_node_name,
         output='screen',
