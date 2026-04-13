@@ -1,4 +1,4 @@
 /mono_py_driver/driver_test:
   ros__parameters:
     orb_slam3_config: Zed_left_camera.yaml
-    camera_topic: /zed/zed_node/left_raw/image_raw_color/compressed
+    orb_slam3_camera_topic: /zed/zed_node/left_raw/image_raw_color/compressed

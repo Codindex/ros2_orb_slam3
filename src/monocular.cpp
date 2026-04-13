@@ -11,11 +11,11 @@ MonocularNode::MonocularNode() :Node("mono_camera_node_cpp")
     RCLCPP_INFO(this->get_logger(), "\nORB-SLAM3-V1 NODE STARTED");
 
     this->declare_parameter("orb_slam3_config", "Zed_left_camera.yaml");
-    this->declare_parameter("camera_topic", "/mono_py_driver/img_msg");
+    this->declare_parameter("orb_slam3_camera_topic", "/mono_py_driver/img_msg");
 
     initializeOrbSLAM();
 
-    subImgMsgName = this->get_parameter("camera_topic").as_string(); // topic to receive RGB image messages
+    subImgMsgName = this->get_parameter("orb_slam3_camera_topic").as_string(); // topic to receive RGB image messages
     
     auto node_namespace = this->get_namespace();
     auto node_name = this->get_name();
