@@ -628,10 +628,20 @@ bool Frame::ProjectPointDistort(MapPoint* pMP, cv::Point2f &kp, float &u, float 
     {
         k3 = mDistCoef.at<float>(4);
     }
+    float k4 = 0;
+    float k5 = 0;
+    float k6 = 0;
+    if(mDistCoef.total() == 8)
+    {
+        k3 = mDistCoef.at<float>(4);
+        k4 = mDistCoef.at<float>(5);
+        k5 = mDistCoef.at<float>(6);
+        k6 = mDistCoef.at<float>(7);
+    }
 
     // Radial distorsion
-    float x_distort = x * (1 + k1 * r2 + k2 * r2 * r2 + k3 * r2 * r2 * r2);
-    float y_distort = y * (1 + k1 * r2 + k2 * r2 * r2 + k3 * r2 * r2 * r2);
+    float x_distort = x * (1 + k1 * r2 + k2 * r2 * r2 + k3 * r2 * r2 * r2) / (1 + k4 * r2 + k5 * r2 * r2 + k6 * r2 * r2 * r2);
+    float y_distort = y * (1 + k1 * r2 + k2 * r2 * r2 + k3 * r2 * r2 * r2) / (1 + k4 * r2 + k5 * r2 * r2 + k6 * r2 * r2 * r2);
 
     // Tangential distorsion
     x_distort = x_distort + (2 * p1 * x * y + p2 * (r2 + 2 * x * x));

@@ -207,7 +207,21 @@ namespace ORB_SLAM3 {
             if(found){
                 readParameter<float>(fSettings,"Camera1.k3",found,false);
                 if(found){
-                    vPinHoleDistorsion1_.resize(5);
+                    bool found_k4;
+                    bool found_k5;
+                    bool found_k6;
+                    readParameter<float>(fSettings,"Camera1.k4",found_k4,false);
+                    readParameter<float>(fSettings,"Camera1.k5",found_k5,false);
+                    readParameter<float>(fSettings,"Camera1.k6",found_k6,false);
+                    if (found_k4 && found_k5 && found_k6) {
+                        vPinHoleDistorsion1_.resize(8);
+                        vPinHoleDistorsion1_[5] = readParameter<float>(fSettings,"Camera1.k4",found);
+                        vPinHoleDistorsion1_[6] = readParameter<float>(fSettings,"Camera1.k5",found);
+                        vPinHoleDistorsion1_[7] = readParameter<float>(fSettings,"Camera1.k6",found);
+                    }
+                    else {
+                        vPinHoleDistorsion1_.resize(5);
+                    }
                     vPinHoleDistorsion1_[4] = readParameter<float>(fSettings,"Camera1.k3",found);
                 }
                 else{
