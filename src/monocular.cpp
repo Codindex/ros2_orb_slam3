@@ -33,7 +33,7 @@ MonocularNode::MonocularNode() :Node("mono_camera_node_cpp")
     transform_publisher_ = this->create_publisher<geometry_msgs::msg::Transform>(pubTransform, 1);
     transformStamped_publisher_ = this->create_publisher<geometry_msgs::msg::TransformStamped>(pubTransformStamped, 1);
 
-    output_publisher_ = this->create_publisher<ros2_orb_slam3::msg::TrackedCompressedImage>(pubOutput, 1);
+    // output_publisher_ = this->create_publisher<ros2_orb_slam3::msg::TrackedCompressedImage>(pubOutput, 1);
 }
 
 //* Destructor
@@ -134,11 +134,11 @@ void MonocularNode::Img_callback(const sensor_msgs::msg::CompressedImage &msg)
 
     transformStamped_publisher_->publish(transformStamped);
 
-    auto trackedCompressedImage_message = ros2_orb_slam3::msg::TrackedCompressedImage();
-    trackedCompressedImage_message.transform = transformStamped;
-    trackedCompressedImage_message.image = msg;
+    // auto trackedCompressedImage_message = ros2_orb_slam3::msg::TrackedCompressedImage();
+    // trackedCompressedImage_message.transform = transformStamped;
+    // trackedCompressedImage_message.image = msg;
 
-    output_publisher_->publish(trackedCompressedImage_message);
+    // output_publisher_->publish(trackedCompressedImage_message);
 }
 
 

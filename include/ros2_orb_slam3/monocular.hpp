@@ -83,7 +83,7 @@ class MonocularNode : public rclcpp::Node
         rclcpp::Subscription<sensor_msgs::msg::CompressedImage>::SharedPtr subImgMsg_subscription_;
         rclcpp::Publisher<geometry_msgs::msg::Transform>::SharedPtr transform_publisher_;
         rclcpp::Publisher<geometry_msgs::msg::TransformStamped>::SharedPtr transformStamped_publisher_;
-        rclcpp::Publisher<ros2_orb_slam3::msg::TrackedCompressedImage>::SharedPtr output_publisher_;
+        // rclcpp::Publisher<ros2_orb_slam3::msg::TrackedCompressedImage>::SharedPtr output_publisher_;
 
         //* ORB_SLAM3 related variables
         ORB_SLAM3::System *pAgent; // pointer to a ORB SLAM3 object
