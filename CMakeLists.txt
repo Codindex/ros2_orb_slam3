@@ -21,7 +21,7 @@ find_package(std_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 # find_package(your_custom_msg_interface REQUIRED)
-find_package(rosidl_default_generators REQUIRED)
+# find_package(rosidl_default_generators REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(OpenCV 4.2 REQUIRED)
 find_package(Eigen3 3.3.0 REQUIRED) # Matched with Sophus
@@ -158,15 +158,15 @@ install(FILES ${DBoW2_PATH} DESTINATION lib)
 install(FILES ${g2o_PATH} DESTINATION lib)
 
 # Set message interfaces
-set(msg_files
-  "msg/TrackedCompressedImage.msg"
-)
+# set(msg_files
+#   "msg/TrackedCompressedImage.msg"
+# )
 
 # Install the new message interface
-rosidl_generate_interfaces(${PROJECT_NAME}
-  ${msg_files}
-  DEPENDENCIES sensor_msgs geometry_msgs
-)
+# rosidl_generate_interfaces(${PROJECT_NAME}
+#   ${msg_files}
+#   DEPENDENCIES sensor_msgs geometry_msgs
+# )
 
 # Add executable
 add_executable(mono_node_cpp
@@ -191,11 +191,11 @@ ament_target_dependencies(mono_camera_node_cpp
 )
 
 # With the new message interface
-rosidl_get_typesupport_target(cpp_typesupport_target
-  ${PROJECT_NAME} rosidl_typesupport_cpp)
+# rosidl_get_typesupport_target(cpp_typesupport_target
+#   ${PROJECT_NAME} rosidl_typesupport_cpp)
 
 target_link_libraries(mono_camera_node_cpp PUBLIC
-  "${cpp_typesupport_target}"
+  # "${cpp_typesupport_target}"
   orb_slam3_lib) # Link a node with the internal shared library
 
 
@@ -219,7 +219,7 @@ ament_export_include_directories(include)
 ament_export_dependencies(
   orb_slam3_lib
   ${THIS_PACKAGE_INCLUDE_DEPENDS}
-  rosidl_default_runtime
+  # rosidl_default_runtime
 )
 
 

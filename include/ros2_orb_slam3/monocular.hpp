@@ -26,7 +26,7 @@
 #include <std_msgs/msg/string.hpp>
 #include <std_msgs/msg/bool.hpp>
 #include "sensor_msgs/msg/image.hpp"
-#include "ros2_orb_slam3/msg/tracked_compressed_image.hpp"
+// #include "ros2_orb_slam3/msg/tracked_compressed_image.hpp"
 using std::placeholders::_1; //* TODO why this is suggested in official tutorial
 
 // Include Eigen
