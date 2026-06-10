@@ -141,4 +141,62 @@ void MonocularNode::Img_callback(const sensor_msgs::msg::CompressedImage &msg)
     // output_publisher_->publish(trackedCompressedImage_message);
 }
 
+//* Callback to process image message and run SLAM node
+void MonocularNode::Img_callback_compressed(const sensor_msgs::msg::CompressedImage &msg)
+{
+    // Initialize
+    cv_bridge::CvImagePtr cv_ptr; //* Does not create a copy, memory efficient
+    // RCLCPP_INFO(this->get_logger(), "Received image");
 
+    //* Convert ROS image to openCV image
+    try
+    {
+        // RCLCPP_INFO(this->get_logger(), "Try creating pointer");
+        cv_ptr = cv_bridge::toCvCopy(msg); // Local scope
+    }
+    catch (cv_bridge::Exception &e)
+    {
+        RCLCPP_ERROR(this->get_logger(),"Error reading image");
+        return;
+    }
+    // RCLCPP_INFO(this->get_logger(), "Pointer successfully created");
+
+    timestamp = extract_timestamp_from_header(cv_ptr->header.stamp);
+    // RCLCPP_INFO(this->get_logger(), "Timer extracted from header");
+
+    //* Perform all ORB-SLAM3 operations in Monocular mode
+    //! Pose with respect to the camera coordinate frame not the world coordinate frame
+    Sophus::SE3f Tcw = pAgent->TrackMonocular(cv_ptr->image, timestamp); 
+
+    //* An example of what can be done after the pose w.r.t camera coordinate frame is computed by ORB SLAM3
+    //Sophus::SE3f Twc = Tcw.inverse(); //* Pose with respect to global image coordinate, reserved for future use
+
+    // Uses beluga_ros package
+    auto transformOrbslam = tf2::toMsg(Tcw);
+
+    // Convert to ROS coordinates
+    auto transformMessage = geometry_msgs::msg::Transform();
+    transformMessage.translation.x = -transformOrbslam.translation.z;
+    transformMessage.translation.y = -transformOrbslam.translation.x;
+    transformMessage.translation.z = transformOrbslam.translation.y;
+
+    transformMessage.rotation.x = -transformOrbslam.rotation.z;
+    transformMessage.rotation.y = -transformOrbslam.rotation.x;
+    transformMessage.rotation.z = transformOrbslam.rotation.y;
+    transformMessage.rotation.w = transformOrbslam.rotation.w;
+
+    transform_publisher_->publish(transformMessage);
+
+    auto transformStamped = geometry_msgs::msg::TransformStamped();
+    transformStamped.header = cv_ptr->header;
+    transformStamped.transform = transformMessage;
+    transformStamped.child_frame_id;
+
+    transformStamped_publisher_->publish(transformStamped);
+
+    // auto trackedCompressedImage_message = ros2_orb_slam3::msg::TrackedCompressedImage();
+    // trackedCompressedImage_message.transform = transformStamped;
+    // trackedCompressedImage_message.image = msg;
+
+    // output_publisher_->publish(trackedCompressedImage_message);
+}

@@ -93,6 +93,7 @@ class MonocularNode : public rclcpp::Node
 
         //* ROS callbacks
         void Img_callback(const sensor_msgs::msg::CompressedImage &msg); // Callback to process RGB image and semantic matrix sent by Python node
+        void Img_callback_compressed(const sensor_msgs::msg::CompressedImage &msg); // Callback to process RGB image and semantic matrix sent by Python node
         
         //* Helper functions
         // ORB_SLAM3::eigenMatXf convertToEigenMat(const std_msgs::msg::Float32MultiArray& msg); // Helper method, converts semantic matrix eigenMatXf, a Eigen 4x4 float matrix
