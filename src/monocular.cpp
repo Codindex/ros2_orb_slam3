@@ -6,7 +6,7 @@ MonocularNode::MonocularNode() :Node("mono_camera_node_cpp")
 {
     // Declare parameters to be passsed from command line
     // https://roboticsbackend.com/rclcpp-params-tutorial-get-set-ros2-params-with-cpp/
-    
+
     // std::cout<<"VLSAM NODE STARTED\n\n";
     RCLCPP_INFO(this->get_logger(), "\nORB-SLAM3-V1 NODE STARTED");
 
@@ -16,7 +16,7 @@ MonocularNode::MonocularNode() :Node("mono_camera_node_cpp")
     initializeOrbSLAM();
 
     subImgMsgName = this->get_parameter("orb_slam3_camera_topic").as_string(); // topic to receive RGB image messages
-    
+
     auto node_namespace = this->get_namespace();
     auto node_name = this->get_name();
 
@@ -38,8 +38,7 @@ MonocularNode::MonocularNode() :Node("mono_camera_node_cpp")
 
 //* Destructor
 MonocularNode::~MonocularNode()
-{   
-    
+{
     // Stop all threads
     // Call method to write the trajectory file
     // Release resources and cleanly shutdown
@@ -64,7 +63,7 @@ void MonocularNode::initializeOrbSLAM(){
     auto settingsFilePath = homeDir + "/" + packagePath + "orb_slam3/config/" + "Monocular" + "/" + configFileString; // "Monocular" will be a variable in a next version
 
     RCLCPP_INFO(this->get_logger(), "Path to settings file: %s", settingsFilePath.c_str());
-    
+
     // NOTE if you plan on passing other configuration parameters to ORB SLAM3 Systems class, do it here
     // NOTE you may also use a .yaml file here to set these values
     sensorType = ORB_SLAM3::System::MONOCULAR; // Monocular, Stereo, RGBD; with/without IMU
@@ -87,7 +86,7 @@ void MonocularNode::Img_callback(const sensor_msgs::msg::CompressedImage &msg)
     // Initialize
     cv_bridge::CvImagePtr cv_ptr; //* Does not create a copy, memory efficient
     // RCLCPP_INFO(this->get_logger(), "Received image");
-    
+
     //* Convert ROS image to openCV image
     try
     {
@@ -103,11 +102,11 @@ void MonocularNode::Img_callback(const sensor_msgs::msg::CompressedImage &msg)
 
     timestamp = extract_timestamp_from_header(cv_ptr->header.stamp);
     // RCLCPP_INFO(this->get_logger(), "Timer extracted from header");
-    
+
     //* Perform all ORB-SLAM3 operations in Monocular mode
     //! Pose with respect to the camera coordinate frame not the world coordinate frame
     Sophus::SE3f Tcw = pAgent->TrackMonocular(cv_ptr->image, timestamp); 
-    
+
     //* An example of what can be done after the pose w.r.t camera coordinate frame is computed by ORB SLAM3
     //Sophus::SE3f Twc = Tcw.inverse(); //* Pose with respect to global image coordinate, reserved for future use
 
